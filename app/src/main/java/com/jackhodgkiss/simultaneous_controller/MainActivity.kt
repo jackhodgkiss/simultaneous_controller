@@ -8,6 +8,8 @@ import android.bluetooth.le.ScanResult
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
@@ -25,6 +27,10 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH,
                 Manifest.permission.BLUETOOTH_ADMIN) {
             adapter.bluetoothLeScanner.startScan(callback)
+            Handler(Looper.getMainLooper()).postDelayed({
+                adapter.bluetoothLeScanner.stopScan(callback)
+                Log.d("BLE", "Scanning Stopped")
+            }, 10_000)
         }
     }
 
