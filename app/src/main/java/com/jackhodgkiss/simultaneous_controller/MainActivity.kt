@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +15,7 @@ import android.util.Log
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -22,15 +24,19 @@ class MainActivity : AppCompatActivity() {
 
     fun scanForDevices(context: Context) {
         val adapter = BluetoothAdapter.getDefaultAdapter()
-
-        context.runWithPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN) {
-            adapter.bluetoothLeScanner.startScan(callback)
-            Handler(Looper.getMainLooper()).postDelayed({
-                adapter.bluetoothLeScanner.stopScan(callback)
-                Log.d("BLE", "Scanning Stopped")
-            }, 10_000)
+        if(adapter != null && !adapter.isEnabled) {
+            val enableBTIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            startActivityForResult(enableBTIntent, REQUEST_ENABLE_BT)
+        } else {
+            context.runWithPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADMIN) {
+                adapter.bluetoothLeScanner.startScan(callback)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    adapter.bluetoothLeScanner.stopScan(callback)
+                    Log.d("BLE", "Scanning Stopped")
+                }, 10_000)
+            }
         }
     }
 
@@ -46,6 +52,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun deviceFound(device: BluetoothDevice) {
         Log.d("BLE", device.address)
+    }
+
+    companion object {
+        const val REQUEST_ENABLE_BT: Int = 1
     }
 
 }
