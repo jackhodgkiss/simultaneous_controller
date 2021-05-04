@@ -12,14 +12,22 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.jackhodgkiss.simultaneous_controller.databinding.ActivityMainBinding
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class MainActivity : AppCompatActivity() {
+    private val sensors: ArrayList<SensorItem> = ArrayList()
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        scanForDevices(this)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        sensors.add(SensorItem("00:1B:44:11:3A:B7"))
+        val sensorRecyclerView = binding.sensorRecyclerView
+        sensorRecyclerView.adapter = SensorAdapter(sensors)
+        sensorRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     fun scanForDevices(context: Context) {
