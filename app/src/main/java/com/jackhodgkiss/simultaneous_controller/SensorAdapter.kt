@@ -23,6 +23,7 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) : RecyclerView.A
     class SensorViewHolder(private var itemBinding: SensorItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bindSensor(sensor: SensorItem) {
+            itemBinding.sensorNameTextView.text = sensor.name
             itemBinding.sensorAddressTextView.text = sensor.address
         }
     }

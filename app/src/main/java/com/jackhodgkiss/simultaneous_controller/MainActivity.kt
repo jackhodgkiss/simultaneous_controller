@@ -24,10 +24,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sensors.add(SensorItem("00:1B:44:11:3A:B7"))
-        val sensorRecyclerView = binding.sensorRecyclerView
-        sensorRecyclerView.adapter = SensorAdapter(sensors)
-        sensorRecyclerView.layoutManager = LinearLayoutManager(this)
+        sensors.add(SensorItem("Sensor One","00:1B:44:11:3A:B7"))
+        sensors.add(SensorItem("Sensor Two","00:1B:44:11:3A:B5"))
+        binding.sensorRecyclerView.adapter = SensorAdapter(sensors)
+        binding.sensorRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     fun scanForDevices(context: Context) {

@@ -8,15 +8,27 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp"/>
+        android:layout_margin="4dp">
+
+    <TextView
+        android:id="@+id/sensor_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sensor Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/sensor_address_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sensor Address"
+        android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"/>
+        android:layout_below="@id/sensor_name_text_view"/>
+
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
