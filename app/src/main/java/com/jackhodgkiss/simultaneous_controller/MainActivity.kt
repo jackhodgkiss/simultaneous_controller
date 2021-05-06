@@ -13,7 +13,9 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jackhodgkiss.simultaneous_controller.databinding.ActivityMainBinding
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
@@ -21,6 +23,8 @@ import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 class MainActivity : AppCompatActivity() {
     private val sensors: ArrayList<SensorItem> = ArrayList()
     private lateinit var binding: ActivityMainBinding
+    private lateinit var notice_text_view: TextView
+    private lateinit var sensor_recycler_view: RecyclerView
     private lateinit var swipe_container: SwipeRefreshLayout
     private lateinit var sensor_adapter: SensorAdapter
 
@@ -28,11 +32,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sensor_adapter = SensorAdapter(sensors)
-        toggleNoticeVisibility()
-        binding.sensorRecyclerView.adapter = sensor_adapter
-        binding.sensorRecyclerView.layoutManager = LinearLayoutManager(this)
+        notice_text_view = binding.noticeTextView
+        sensor_recycler_view = binding.sensorRecyclerView
         swipe_container = binding.sensorSwipeContainer
+        toggleNoticeVisibility()
+        sensor_adapter = SensorAdapter(sensors)
+        sensor_recycler_view.adapter = sensor_adapter
+        sensor_recycler_view.layoutManager = LinearLayoutManager(this)
         swipe_container.setOnRefreshListener {
             scanForDevices(this)
         }
@@ -82,9 +88,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleNoticeVisibility(override: Boolean = false) {
         if(!override && sensors.isEmpty()) {
-            binding.noticeTextView.visibility = View.VISIBLE
+            notice_text_view.visibility = View.VISIBLE
         } else {
-            binding.noticeTextView.visibility = View.GONE
+            notice_text_view.visibility = View.GONE
         }
     }
 
