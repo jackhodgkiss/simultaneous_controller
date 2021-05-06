@@ -72,9 +72,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun deviceFound(device: BluetoothDevice) {
         if(!sensors.any{ sensor -> sensor.address == device.address }) {
-            val sensor = SensorItem(if (device.name != null) device.name else "N/A", device.address)
-            sensors.add(sensor)
-            sensor_adapter.notifyItemChanged(sensors.size - 1)
+            if (device.name != null) {
+                val sensor = SensorItem(device.name, device.address)
+                sensors.add(sensor)
+                sensor_adapter.notifyItemChanged(sensors.size - 1)
+            }
         }
     }
 
