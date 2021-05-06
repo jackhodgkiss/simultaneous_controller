@@ -22,18 +22,19 @@ class MainActivity : AppCompatActivity() {
     private val sensors: ArrayList<SensorItem> = ArrayList()
     private lateinit var binding: ActivityMainBinding
     private lateinit var swipe_container: SwipeRefreshLayout
+    private lateinit var sensor_adapter: SensorAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sensors.add(SensorItem("Sensor One", "00:1B:44:11:3A:B7"))
         if(sensors.isEmpty()) {
             binding.noticeTextView.visibility = View.VISIBLE
         } else {
             binding.noticeTextView.visibility = View.GONE
         }
-        binding.sensorRecyclerView.adapter = SensorAdapter(sensors)
+        sensor_adapter = SensorAdapter(sensors)
+        binding.sensorRecyclerView.adapter = sensor_adapter
         binding.sensorRecyclerView.layoutManager = LinearLayoutManager(this)
         swipe_container = binding.sensorSwipeContainer
         swipe_container.setOnRefreshListener {
@@ -70,7 +71,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun deviceFound(device: BluetoothDevice) {
-        Log.d("BLE", device.address)
+        if(!sensors.any{ sensor -> sensor.address == device.address }) {
+            val sensor = SensorItem(if (device.name != null) device.name else "N/A", device.address)
+            sensors.add(sensor)
+            sensor_adapter.notifyItemChanged(sensors.size - 1)
+        }
     }
 
     companion object {
