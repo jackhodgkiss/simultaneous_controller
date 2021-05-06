@@ -52,9 +52,15 @@ class MainActivity : AppCompatActivity() {
                     Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH,
                     Manifest.permission.BLUETOOTH_ADMIN) {
                 adapter.bluetoothLeScanner.startScan(callback)
+                binding.noticeTextView.visibility = View.GONE
                 Handler(Looper.getMainLooper()).postDelayed({
                     adapter.bluetoothLeScanner.stopScan(callback)
                     swipe_container.isRefreshing = false
+                    if(sensors.isEmpty()) {
+                        binding.noticeTextView.visibility = View.VISIBLE
+                    } else {
+                        binding.noticeTextView.visibility = View.GONE
+                    }
                 }, 10_000)
             }
         }
