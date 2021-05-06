@@ -28,12 +28,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if(sensors.isEmpty()) {
-            binding.noticeTextView.visibility = View.VISIBLE
-        } else {
-            binding.noticeTextView.visibility = View.GONE
-        }
         sensor_adapter = SensorAdapter(sensors)
+        toggleNoticeVisibility()
         binding.sensorRecyclerView.adapter = sensor_adapter
         binding.sensorRecyclerView.layoutManager = LinearLayoutManager(this)
         swipe_container = binding.sensorSwipeContainer
@@ -54,15 +50,11 @@ class MainActivity : AppCompatActivity() {
                 sensors.clear()
                 sensor_adapter.notifyDataSetChanged()
                 adapter.bluetoothLeScanner.startScan(callback)
-                binding.noticeTextView.visibility = View.GONE
+                toggleNoticeVisibility(true)
                 Handler(Looper.getMainLooper()).postDelayed({
                     adapter.bluetoothLeScanner.stopScan(callback)
                     swipe_container.isRefreshing = false
-                    if(sensors.isEmpty()) {
-                        binding.noticeTextView.visibility = View.VISIBLE
-                    } else {
-                        binding.noticeTextView.visibility = View.GONE
-                    }
+                    toggleNoticeVisibility()
                 }, 10_000)
             }
         }
@@ -85,6 +77,14 @@ class MainActivity : AppCompatActivity() {
                 sensors.add(sensor)
                 sensor_adapter.notifyItemChanged(sensors.size - 1)
             }
+        }
+    }
+
+    private fun toggleNoticeVisibility(override: Boolean = false) {
+        if(!override && sensors.isEmpty()) {
+            binding.noticeTextView.visibility = View.VISIBLE
+        } else {
+            binding.noticeTextView.visibility = View.GONE
         }
     }
 
