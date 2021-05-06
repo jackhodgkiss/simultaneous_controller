@@ -14,12 +14,14 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.jackhodgkiss.simultaneous_controller.databinding.ActivityMainBinding
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class MainActivity : AppCompatActivity() {
     private val sensors: ArrayList<SensorItem> = ArrayList()
     private lateinit var binding: ActivityMainBinding
+    private lateinit var swipe_container: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         }
         binding.sensorRecyclerView.adapter = SensorAdapter(sensors)
         binding.sensorRecyclerView.layoutManager = LinearLayoutManager(this)
+        swipe_container = binding.sensorSwipeContainer
+        swipe_container.setOnRefreshListener {
+            scanForDevices(this)
+        }
     }
 
     fun scanForDevices(context: Context) {
@@ -47,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.bluetoothLeScanner.startScan(callback)
                 Handler(Looper.getMainLooper()).postDelayed({
                     adapter.bluetoothLeScanner.stopScan(callback)
-                    Log.d("BLE", "Scanning Stopped")
+                    swipe_container.isRefreshing = false
                 }, 10_000)
             }
         }
