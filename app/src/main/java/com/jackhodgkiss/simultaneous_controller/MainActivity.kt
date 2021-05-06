@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity() {
             context.runWithPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH,
                     Manifest.permission.BLUETOOTH_ADMIN) {
+                sensors.clear()
+                sensor_adapter.notifyDataSetChanged()
                 adapter.bluetoothLeScanner.startScan(callback)
                 binding.noticeTextView.visibility = View.GONE
                 Handler(Looper.getMainLooper()).postDelayed({
