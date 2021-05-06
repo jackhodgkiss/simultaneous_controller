@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jackhodgkiss.simultaneous_controller.databinding.ActivityMainBinding
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
@@ -24,8 +25,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sensors.add(SensorItem("Sensor One","00:1B:44:11:3A:B7"))
-        sensors.add(SensorItem("Sensor Two","00:1B:44:11:3A:B5"))
+        sensors.add(SensorItem("Sensor One", "00:1B:44:11:3A:B7"))
+        if(sensors.isEmpty()) {
+            binding.noticeTextView.visibility = View.VISIBLE
+        } else {
+            binding.noticeTextView.visibility = View.GONE
+        }
         binding.sensorRecyclerView.adapter = SensorAdapter(sensors)
         binding.sensorRecyclerView.layoutManager = LinearLayoutManager(this)
     }
