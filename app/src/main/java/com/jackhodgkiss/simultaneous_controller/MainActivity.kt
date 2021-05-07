@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun scanForDevices(context: Context) {
+    private fun scanForDevices(context: Context) {
         val adapter = BluetoothAdapter.getDefaultAdapter()
         if(adapter != null && !adapter.isEnabled) {
             val enableBTIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
