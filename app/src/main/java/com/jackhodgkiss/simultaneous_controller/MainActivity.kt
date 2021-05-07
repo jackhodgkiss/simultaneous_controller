@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
+import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -55,7 +56,8 @@ class MainActivity : AppCompatActivity() {
                     Manifest.permission.BLUETOOTH_ADMIN) {
                 sensors.clear()
                 sensor_adapter.notifyDataSetChanged()
-                adapter.bluetoothLeScanner.startScan(callback)
+                val settings = ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
+                adapter.bluetoothLeScanner.startScan(null, settings, callback)
                 toggleNoticeVisibility(true)
                 Handler(Looper.getMainLooper()).postDelayed({
                     adapter.bluetoothLeScanner.stopScan(callback)
