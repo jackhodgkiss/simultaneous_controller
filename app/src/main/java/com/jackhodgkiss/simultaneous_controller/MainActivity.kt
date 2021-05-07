@@ -68,20 +68,26 @@ class MainActivity : AppCompatActivity() {
 
     private val callback = object : ScanCallback() {
         override fun onBatchScanResults(results: MutableList<ScanResult>?) {
-            results?.forEach { result -> deviceFound(result.device) }
+            results?.forEach { result -> handleResult(result) }
         }
 
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
-            result?.let { deviceFound(result.device) }
+            result?.let { handleResult(result) }
         }
     }
 
-    private fun deviceFound(device: BluetoothDevice) {
-        if(!sensors.any{ sensor -> sensor.address == device.address }) {
-            if (device.name != null) {
-                val sensor = SensorItem(device.name, device.address)
+    private fun handleResult(result: ScanResult) {
+        if(!sensors.any{ sensor -> sensor.address == result.device.address }) {
+            if (result.device.name != null) {
+                val sensor = SensorItem(result.device.name, result.device.address, arrayListOf(result.rssi))
                 sensors.add(sensor)
                 sensor_adapter.notifyItemChanged(sensors.size - 1)
+            }
+        } else {
+            if (result.device.name != null) {
+                val sensor = sensors.find { sensor -> sensor.address == result.device.address }
+                sensor?.rssi_values?.add(result.rssi)
+                sensor_adapter.notifyItemChanged(sensors.indexOf(sensor))
             }
         }
     }

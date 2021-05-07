@@ -25,6 +25,7 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) : RecyclerView.A
         fun bindSensor(sensor: SensorItem) {
             itemBinding.sensorNameTextView.text = sensor.name
             itemBinding.sensorAddressTextView.text = sensor.address
+            itemBinding.sensorRssiTextView.text = "RSSI: " + sensor.rssi_values.average().toInt().toString() + "dB"
         }
     }
 
