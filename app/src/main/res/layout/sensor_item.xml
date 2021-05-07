@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="4dp"
-    android:layout_margin="4dp">
+    android:layout_margin="4dp"
+    app:cardCornerRadius="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,23 +12,33 @@
         android:layout_margin="4dp"
         android:padding="8dp">
 
-    <TextView
-        android:id="@+id/sensor_name_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sensor Name"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/sensor_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sensor Name"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/sensor_address_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sensor Address"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        android:layout_below="@id/sensor_name_text_view"/>
+        <TextView
+            android:id="@+id/sensor_address_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensor_name_text_view"
+            android:text="Sensor Address"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/sensor_rssi_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RSSI: -0 dB"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_below="@id/sensor_name_text_view"
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
 
