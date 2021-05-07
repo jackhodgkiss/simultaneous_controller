@@ -21,6 +21,15 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <ImageButton
+            android:id="@+id/favourite_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_not_favourite"
+            android:background="@android:color/transparent"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="Set sensor as favourite"/>
+
         <TextView
             android:id="@+id/sensor_address_text_view"
             android:layout_width="wrap_content"

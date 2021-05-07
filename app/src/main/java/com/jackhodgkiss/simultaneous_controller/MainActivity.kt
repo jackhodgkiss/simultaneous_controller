@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     private fun handleResult(result: ScanResult) {
         if(!sensors.any{ sensor -> sensor.address == result.device.address }) {
             if (result.device.name != null) {
-                val sensor = SensorItem(result.device.name, result.device.address, arrayListOf(result.rssi))
+                val sensor = SensorItem(result.device.name, result.device.address, arrayListOf(result.rssi), false)
                 sensors.add(sensor)
                 sensor_adapter.notifyItemChanged(sensors.size - 1)
             }
