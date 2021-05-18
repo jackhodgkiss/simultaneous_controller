@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         swipe_container = binding.sensorSwipeContainer
         toggleNoticeVisibility()
         sensor_adapter = SensorAdapter(sensors)
+        sensor_adapter.setHasStableIds(true)
         sensor_recycler_view.adapter = sensor_adapter
         sensor_recycler_view.layoutManager = LinearLayoutManager(this)
         swipe_container.setOnRefreshListener {
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             if (result.device.name != null) {
                 val sensor = sensors.find { sensor -> sensor.address == result.device.address }
                 sensor?.rssi_values?.add(result.rssi)
-                sensor_adapter.notifyItemChanged(sensors.indexOf(sensor))
+                sensor_adapter.notifyDataSetChanged()
             }
         }
     }

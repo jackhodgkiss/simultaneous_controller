@@ -1,11 +1,7 @@
 package com.jackhodgkiss.simultaneous_controller
 
-import android.bluetooth.BluetoothDevice
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.SensorItemBinding
 
@@ -21,6 +17,10 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) : RecyclerView.A
     }
 
     override fun getItemCount() = sensors.size
+
+    override fun getItemId(position: Int): Long {
+        return sensors[position].hashCode().toLong()
+    }
 
     class SensorViewHolder(private var itemBinding: SensorItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         private var favourite_button = itemBinding.favouriteButton
