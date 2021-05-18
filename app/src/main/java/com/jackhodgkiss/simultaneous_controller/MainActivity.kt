@@ -8,6 +8,7 @@ import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -23,6 +24,7 @@ import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class MainActivity : AppCompatActivity() {
     private val sensors: ArrayList<SensorItem> = ArrayList()
+    private lateinit var sharedPreferences: SharedPreferences;
     private lateinit var binding: ActivityMainBinding
     private lateinit var notice_text_view: TextView
     private lateinit var sensor_recycler_view: RecyclerView
@@ -44,20 +46,25 @@ class MainActivity : AppCompatActivity() {
         swipe_container.setOnRefreshListener {
             scanForDevices(this)
         }
+        sharedPreferences =
+            this.getSharedPreferences(R.string.preference_file_key.toString(), Context.MODE_PRIVATE)
     }
 
     private fun scanForDevices(context: Context) {
         val adapter = BluetoothAdapter.getDefaultAdapter()
-        if(adapter != null && !adapter.isEnabled) {
+        if (adapter != null && !adapter.isEnabled) {
             val enableBTIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBTIntent, REQUEST_ENABLE_BT)
         } else {
-            context.runWithPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH,
-                    Manifest.permission.BLUETOOTH_ADMIN) {
+            context.runWithPermissions(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN
+            ) {
                 sensors.clear()
                 sensor_adapter.notifyDataSetChanged()
-                val settings = ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
+                val settings =
+                    ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
                 adapter.bluetoothLeScanner.startScan(null, settings, callback)
                 toggleNoticeVisibility(true)
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -80,9 +87,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleResult(result: ScanResult) {
-        if(!sensors.any{ sensor -> sensor.address == result.device.address }) {
+        if (!sensors.any { sensor -> sensor.address == result.device.address }) {
             if (result.device.name != null) {
-                val sensor = SensorItem(result.device.name, result.device.address, arrayListOf(result.rssi), false)
+                val sensor = SensorItem(
+                    result.device.name,
+                    result.device.address,
+                    arrayListOf(result.rssi),
+                    sharedPreferences.contains(result.device.address)
+                )
                 sensors.add(sensor)
                 sensor_adapter.notifyItemChanged(sensors.size - 1)
             }
@@ -96,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun toggleNoticeVisibility(override: Boolean = false) {
-        if(!override && sensors.isEmpty()) {
+        if (!override && sensors.isEmpty()) {
             notice_text_view.visibility = View.VISIBLE
         } else {
             notice_text_view.visibility = View.GONE

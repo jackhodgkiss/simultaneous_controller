@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Simultaneous_controller</string>
+    <string name="preference_file_key">com.jackhodgkiss.simultaneous_controller.preference_key_file</string>
 </resources>
