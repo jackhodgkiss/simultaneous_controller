@@ -101,6 +101,10 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) :
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     sensor.name = input.text.toString()
                     itemBinding.sensorNameTextView.text = sensor.name
+                    with(sharedPreferences.edit()) {
+                        putString(sensor.address + "_name", sensor.name)
+                        apply()
+                    }
                 }
             })
             builder.setNegativeButton("Cancel", object : DialogInterface.OnClickListener {

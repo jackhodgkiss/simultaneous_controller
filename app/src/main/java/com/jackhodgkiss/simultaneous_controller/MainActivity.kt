@@ -89,8 +89,9 @@ class MainActivity : AppCompatActivity() {
     private fun handleResult(result: ScanResult) {
         if (!sensors.any { sensor -> sensor.address == result.device.address }) {
             if (result.device.name != null) {
+                val sensorName = sharedPreferences.getString(result.device.address + "_name", result.device.name).toString()
                 val sensor = SensorItem(
-                    result.device.name,
+                    sensorName,
                     result.device.address,
                     arrayListOf(result.rssi),
                     sharedPreferences.contains(result.device.address + "_is_favourite")
