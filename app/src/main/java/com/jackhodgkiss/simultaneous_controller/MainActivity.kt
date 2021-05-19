@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                     result.device.name,
                     result.device.address,
                     arrayListOf(result.rssi),
-                    sharedPreferences.contains(result.device.address)
+                    sharedPreferences.contains(result.device.address + "_is_favourite")
                 )
                 sensors.add(sensor)
                 sensor_adapter.notifyItemChanged(sensors.size - 1)

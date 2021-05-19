@@ -56,14 +56,14 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) :
                     sensor.is_favourite = false
                     favourite_button.setImageResource(R.drawable.ic_not_favourite)
                     with(sharedPreferences.edit()) {
-                        remove(sensor.address)
+                        remove(sensor.address + "_is_favourite")
                         apply()
                     }
                 } else {
                     sensor.is_favourite = true
                     favourite_button.setImageResource(R.drawable.ic_favourite)
                     with(sharedPreferences.edit()) {
-                        putBoolean(sensor.address, true)
+                        putBoolean(sensor.address + "_is_favourite", true)
                         apply()
                     }
                 }
