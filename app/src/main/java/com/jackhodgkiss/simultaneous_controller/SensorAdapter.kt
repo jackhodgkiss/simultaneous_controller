@@ -1,8 +1,8 @@
 package com.jackhodgkiss.simultaneous_controller
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.SensorItemBinding
 
@@ -26,12 +26,16 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) :
     }
 
     class SensorViewHolder(private var itemBinding: SensorItemBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
+        RecyclerView.ViewHolder(itemBinding.root), View.OnCreateContextMenuListener {
         private var favourite_button = itemBinding.favouriteButton
         private val sharedPreferences = favourite_button.context.getSharedPreferences(
             R.string.preference_file_key.toString(),
             Context.MODE_PRIVATE
         )
+
+        init {
+            itemBinding.root.setOnCreateContextMenuListener(this)
+        }
 
         fun bindSensor(sensor: SensorItem) {
             itemBinding.sensorNameTextView.text = sensor.name
@@ -57,6 +61,28 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) :
                         apply()
                     }
                 }
+            }
+        }
+
+        override fun onCreateContextMenu(
+            menu: ContextMenu?,
+            v: View?,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
+            val editName = menu?.add("Edit Name")
+            val identify = menu?.add("Identify")
+            editName?.setOnMenuItemClickListener(clickListener)
+            identify?.setOnMenuItemClickListener(clickListener)
+        }
+
+        private val clickListener: MenuItem.OnMenuItemClickListener = object : MenuItem.OnMenuItemClickListener {
+            override fun onMenuItemClick(item: MenuItem?): Boolean {
+                when(item?.itemId) {
+                    0 -> Log.d("Menu", "Edit Me $itemId")
+                    1 -> Log.d("Menu", "Identify $itemId")
+                    else -> return false
+                }
+                return true
             }
         }
     }
