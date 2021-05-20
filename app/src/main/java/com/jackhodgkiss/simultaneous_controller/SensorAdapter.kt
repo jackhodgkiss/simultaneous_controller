@@ -47,7 +47,7 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) :
             itemBinding.sensorNameTextView.text = sensor.name
             itemBinding.sensorAddressTextView.text = sensor.address
             itemBinding.sensorRssiTextView.text =
-                "RSSI: " + sensor.rssi_values.average().toInt().toString() + "dB"
+                "RSSI: " + sensor.current_rssi.toString() + "dB"
             if (sensor.is_favourite) {
                 favourite_button.setImageResource(R.drawable.ic_favourite)
             }

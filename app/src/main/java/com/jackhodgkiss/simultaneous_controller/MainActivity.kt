@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 val sensor = SensorItem(
                     sensorName,
                     result.device.address,
-                    arrayListOf(result.rssi),
+                    result.rssi,
                     sharedPreferences.contains(result.device.address + "_is_favourite")
                 )
                 sensors.add(sensor)
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             if (result.device.name != null) {
                 val sensor = sensors.find { sensor -> sensor.address == result.device.address }
-                sensor?.rssi_values?.add(result.rssi)
+                sensor?.current_rssi = result.rssi
                 sensor_adapter.notifyDataSetChanged()
             }
         }
