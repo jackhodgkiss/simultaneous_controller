@@ -3,7 +3,6 @@ package com.jackhodgkiss.simultaneous_controller
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.text.InputType
 import android.util.Log
 import android.view.*
 import android.widget.EditText
@@ -31,8 +30,8 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) :
 
     class SensorViewHolder(private var itemBinding: SensorItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root), View.OnCreateContextMenuListener {
-        private var favourite_button = itemBinding.favouriteButton
-        private val sharedPreferences = favourite_button.context.getSharedPreferences(
+        private var favouriteButton = itemBinding.favouriteButton
+        private val sharedPreferences = favouriteButton.context.getSharedPreferences(
             R.string.preference_file_key.toString(),
             Context.MODE_PRIVATE
         )
@@ -49,19 +48,19 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) :
             itemBinding.sensorRssiTextView.text =
                 "RSSI: " + sensor.current_rssi.toString() + "dB"
             if (sensor.is_favourite) {
-                favourite_button.setImageResource(R.drawable.ic_favourite)
+                favouriteButton.setImageResource(R.drawable.ic_favourite)
             }
-            favourite_button.setOnClickListener {
+            favouriteButton.setOnClickListener {
                 if (sensor.is_favourite) {
                     sensor.is_favourite = false
-                    favourite_button.setImageResource(R.drawable.ic_not_favourite)
+                    favouriteButton.setImageResource(R.drawable.ic_not_favourite)
                     with(sharedPreferences.edit()) {
                         remove(sensor.address + "_is_favourite")
                         apply()
                     }
                 } else {
                     sensor.is_favourite = true
-                    favourite_button.setImageResource(R.drawable.ic_favourite)
+                    favouriteButton.setImageResource(R.drawable.ic_favourite)
                     with(sharedPreferences.edit()) {
                         putBoolean(sensor.address + "_is_favourite", true)
                         apply()
@@ -81,16 +80,17 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) :
             identify?.setOnMenuItemClickListener(clickListener)
         }
 
-        private val clickListener: MenuItem.OnMenuItemClickListener = object : MenuItem.OnMenuItemClickListener {
-            override fun onMenuItemClick(item: MenuItem?): Boolean {
-                when(item?.itemId) {
-                    0 -> editSensorName()
-                    1 -> Log.d("Menu", "Identify $itemId")
-                    else -> return false
+        private val clickListener: MenuItem.OnMenuItemClickListener =
+            object : MenuItem.OnMenuItemClickListener {
+                override fun onMenuItemClick(item: MenuItem?): Boolean {
+                    when (item?.itemId) {
+                        0 -> editSensorName()
+                        1 -> Log.d("Menu", "Identify $itemId")
+                        else -> return false
+                    }
+                    return true
                 }
-                return true
             }
-        }
 
         private fun editSensorName() {
             val builder = AlertDialog.Builder(itemBinding.root.context)
