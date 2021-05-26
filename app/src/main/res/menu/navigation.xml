@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ic_baseline_bluetooth_searching"
+        android:icon="@drawable/ic_baseline_bluetooth_searching_24"
+        android:title="Scanner"/>
+    <item
+        android:id="@+id/ic_baseline_science"
+        android:icon="@drawable/ic_baseline_science_24"
+        android:title="Experiment Planner"/>
+</menu>
