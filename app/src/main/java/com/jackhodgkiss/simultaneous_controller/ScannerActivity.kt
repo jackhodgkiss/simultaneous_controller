@@ -17,13 +17,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.jackhodgkiss.simultaneous_controller.databinding.ActivityMainBinding
+import com.jackhodgkiss.simultaneous_controller.databinding.ActivityScannerBinding
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
-class MainActivity : AppCompatActivity() {
+class ScannerActivity : AppCompatActivity() {
     private val sensors: ArrayList<SensorItem> = ArrayList()
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityScannerBinding
     private lateinit var noticeTextView: TextView
     private lateinit var sensorRecyclerView: RecyclerView
     private lateinit var swipeContainer: SwipeRefreshLayout
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityScannerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         noticeTextView = binding.noticeTextView
         sensorRecyclerView = binding.sensorRecyclerView
