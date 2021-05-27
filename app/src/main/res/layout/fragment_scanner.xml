@@ -5,14 +5,25 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ScannerFragment">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/notice_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No sensors have been identified!"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/sensor_swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Scanner Fragment" />
-    </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sensor_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            android:scrollbars="vertical"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>
