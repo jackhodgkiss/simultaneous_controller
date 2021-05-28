@@ -53,6 +53,7 @@ class ScannerFragment : Fragment() {
         sensorAdapter.setHasStableIds(true)
         sensorRecyclerView.adapter = sensorAdapter
         sensorRecyclerView.layoutManager = LinearLayoutManager(view.context)
+        sensorRecyclerView.itemAnimator = null
         swipeContainer.setOnRefreshListener {
             scanForDevices(view.context)
         }
