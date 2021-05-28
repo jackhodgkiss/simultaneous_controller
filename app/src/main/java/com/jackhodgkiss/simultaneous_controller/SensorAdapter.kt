@@ -49,6 +49,8 @@ class SensorAdapter(private val sensors: ArrayList<SensorItem>) :
                 "RSSI: " + sensor.current_rssi.toString() + "dB"
             if (sensor.is_favourite) {
                 favouriteButton.setImageResource(R.drawable.ic_favourite)
+            } else {
+                favouriteButton.setImageResource(R.drawable.ic_not_favourite)
             }
             favouriteButton.setOnClickListener {
                 if (sensor.is_favourite) {
