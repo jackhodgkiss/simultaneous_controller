@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Simultaneous Controller</string>
     <string name="preference_file_key">com.jackhodgkiss.simultaneous_controller.preference_key_file</string>
+    <string-array name="gestures_array">
+        <item>Stationary</item>
+        <item>Figure Eight</item>
+        <item>Shaking (Light)</item>
+        <item>Shaking (Heavy)</item>
+        <item>Tilting</item>
+        <item>Holding (Typical Use)</item>
+        <item>Moving Towards &amp; Away</item>
+    </string-array>
 </resources>

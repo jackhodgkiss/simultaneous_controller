@@ -10,10 +10,183 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/key_generation_mode_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:textColor="@color/black"
+            android:text="Select Key Generation Mode"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:padding="2dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:attr/listDivider"
+            android:layout_toEndOf="@+id/key_generation_mode_text_view"/>
+
+        <RadioGroup
+            android:id="@+id/key_generation_mode_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="5dp"
             android:layout_centerInParent="true"
-            android:text="Experiment Planner Fragment" />
+            android:layout_below="@+id/key_generation_mode_text_view">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Simultaneous"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Consecutively"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/quantization_function_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/key_generation_mode_radio_group"
+            android:text="Select Quantization Function"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:padding="2dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:attr/listDivider"
+            android:layout_below="@+id/key_generation_mode_radio_group"
+            android:layout_toEndOf="@+id/quantization_function_text_view"/>
+
+        <RadioGroup
+            android:id="@+id/quantization_function_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="5dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/quantization_function_text_view">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2-Level"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Multi-level"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/gesture_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/quantization_function_radio_group"
+            android:text="Select Which Gesture Shall Be Performed"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:padding="2dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:attr/listDivider"
+            android:layout_below="@+id/quantization_function_radio_group"
+            android:layout_toEndOf="@+id/gesture_text_view"/>
+
+        <Spinner
+            android:id="@+id/gesture_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_below="@+id/gesture_text_view"/>
+
+        <TextView
+            android:id="@+id/group_size_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/gesture_spinner"
+            android:text="Group Size During Experiment"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:padding="2dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:attr/listDivider"
+            android:layout_below="@+id/gesture_spinner"
+            android:layout_toEndOf="@+id/group_size_text_view"/>
+
+        <EditText
+            android:id="@+id/group_size_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_below="@id/group_size_text_view"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/experiment_duration_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/group_size_edit_text"
+            android:text="Maximum Experiment Duration"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:padding="2dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:attr/listDivider"
+            android:layout_below="@+id/group_size_edit_text"
+            android:layout_toEndOf="@+id/experiment_duration_text_view"/>
+
+        <RadioGroup
+            android:id="@+id/experiment_duration_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/experiment_duration_text_view">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30 Seconds"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60 Seconds"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="90 Seconds"/>
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:padding="2dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:attr/listDivider"
+            android:layout_below="@+id/experiment_duration_radio_group"/>
+
+        <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONFIRM"
+            android:layout_margin="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            />
     </RelativeLayout>
 
 </FrameLayout>
