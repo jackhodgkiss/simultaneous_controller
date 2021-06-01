@@ -170,12 +170,24 @@
                 android:text="90 Seconds"/>
         </RadioGroup>
 
+        <TextView
+            android:id="@+id/selected_sensors_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3sp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/experiment_duration_radio_group"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Select Sensors"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:padding="2dp"
             android:layout_marginTop="15dp"
             android:background="?android:attr/listDivider"
+            android:layout_toRightOf="@+id/selected_sensors_text_view"
             android:layout_below="@+id/experiment_duration_radio_group"/>
 
         <Button
@@ -185,8 +197,8 @@
             android:text="CONFIRM"
             android:layout_margin="5dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            />
+            android:layout_alignParentRight="true"/>
+        
     </RelativeLayout>
 
 </FrameLayout>
