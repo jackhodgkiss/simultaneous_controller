@@ -14,12 +14,11 @@ import com.jackhodgkiss.simultaneous_controller.R
 import com.jackhodgkiss.simultaneous_controller.SelectableSensorAdapter
 import com.jackhodgkiss.simultaneous_controller.SelectableSensorItem
 import com.jackhodgkiss.simultaneous_controller.databinding.FragmentExperimentPlannerBinding
-import com.jackhodgkiss.simultaneous_controller.databinding.FragmentScannerBinding
 
 class ExperimentPlannerFragment : Fragment() {
     private val selectableSensors: ArrayList<SelectableSensorItem> = ArrayList()
     private lateinit var binding: FragmentExperimentPlannerBinding
-    private lateinit var gesture_spinner: Spinner
+    private lateinit var gestureSpinner: Spinner
     private lateinit var selectableSensorsRecyclerView: RecyclerView
     private lateinit var selectableSensorsAdapter: SelectableSensorAdapter
 
@@ -35,7 +34,7 @@ class ExperimentPlannerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val gestureSpinner = binding.gestureSpinner
+        gestureSpinner = binding.gestureSpinner
         ArrayAdapter.createFromResource(
             view.context,
             R.array.gestures_array,
@@ -45,12 +44,6 @@ class ExperimentPlannerFragment : Fragment() {
             gestureSpinner.adapter = adapter
         }
         selectableSensorsRecyclerView = binding.selectableSensorsRecyclerView
-        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
-        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
-        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
-        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
-        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
-        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
         selectableSensorsAdapter = SelectableSensorAdapter(selectableSensors)
         selectableSensorsAdapter.setHasStableIds(true)
         selectableSensorsRecyclerView.adapter = selectableSensorsAdapter
