@@ -206,8 +206,9 @@
             android:id="@+id/selectable_sensors_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            android:layout_below="@+id/refresh_selectable_sensors_button"/>
+            android:layout_above="@+id/confirm_button"
+            android:layout_below="@+id/refresh_selectable_sensors_button"
+            android:scrollbars="vertical" />
 
         <Button
             android:id="@+id/confirm_button"
@@ -216,7 +217,7 @@
             android:text="CONFIRM"
             android:layout_margin="5dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentEnd="true"/>
         
     </RelativeLayout>
 
