@@ -8,13 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.R
+import com.jackhodgkiss.simultaneous_controller.SelectableSensorAdapter
+import com.jackhodgkiss.simultaneous_controller.SelectableSensorItem
 import com.jackhodgkiss.simultaneous_controller.databinding.FragmentExperimentPlannerBinding
 import com.jackhodgkiss.simultaneous_controller.databinding.FragmentScannerBinding
 
 class ExperimentPlannerFragment : Fragment() {
+    private val selectableSensors: ArrayList<SelectableSensorItem> = ArrayList()
     private lateinit var binding: FragmentExperimentPlannerBinding
     private lateinit var gesture_spinner: Spinner
+    private lateinit var selectableSensorsRecyclerView: RecyclerView
+    private lateinit var selectableSensorsAdapter: SelectableSensorAdapter
 
 
     override fun onCreateView(
@@ -37,6 +44,17 @@ class ExperimentPlannerFragment : Fragment() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             gestureSpinner.adapter = adapter
         }
+        selectableSensorsRecyclerView = binding.selectableSensorsRecyclerView
+        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
+        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
+        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
+        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
+        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
+        selectableSensors.add(SelectableSensorItem("Sensor 1", "00:1B:44:11:3A:B7", false))
+        selectableSensorsAdapter = SelectableSensorAdapter(selectableSensors)
+        selectableSensorsAdapter.setHasStableIds(true)
+        selectableSensorsRecyclerView.adapter = selectableSensorsAdapter
+        selectableSensorsRecyclerView.layoutManager = LinearLayoutManager(view.context)
+        selectableSensorsRecyclerView.itemAnimator = null
     }
-
 }
