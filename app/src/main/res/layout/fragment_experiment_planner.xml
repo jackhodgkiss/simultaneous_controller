@@ -208,7 +208,7 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:layout_below="@+id/refresh_selected_sensors_button"/>
-        
+
         <Button
             android:id="@+id/confirm_button"
             android:layout_width="wrap_content"
