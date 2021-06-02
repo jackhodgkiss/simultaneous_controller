@@ -7,6 +7,7 @@ import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.R
 import com.jackhodgkiss.simultaneous_controller.SelectableSensorAdapter
 import com.jackhodgkiss.simultaneous_controller.SelectableSensorItem
-import com.jackhodgkiss.simultaneous_controller.SensorItem
 import com.jackhodgkiss.simultaneous_controller.databinding.FragmentExperimentPlannerBinding
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
@@ -32,7 +32,7 @@ class ExperimentPlannerFragment : Fragment() {
     private lateinit var gestureSpinner: Spinner
     private lateinit var selectableSensorsRecyclerView: RecyclerView
     private lateinit var selectableSensorsAdapter: SelectableSensorAdapter
-
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +63,8 @@ class ExperimentPlannerFragment : Fragment() {
         binding.refreshSelectableSensorsButton.setOnClickListener {
             scanForDevices(view.context)
         }
+        sharedPreferences =
+            view.context.getSharedPreferences(R.string.preference_file_key.toString(), Context.MODE_PRIVATE)
     }
 
     private fun scanForDevices(context: Context) {
@@ -100,14 +102,18 @@ class ExperimentPlannerFragment : Fragment() {
 
     private fun handleResult(result: ScanResult) {
         if (!selectableSensors.any { sensor -> sensor.address == result.device.address }) {
-            if (result.device.name != null) {
-                val sensorName = result.device.name
-                val sensor = SelectableSensorItem(
-                    sensorName,
-                    result.device.address,
-                    false)
-                selectableSensors.add(sensor)
-                selectableSensorsAdapter.notifyItemChanged(selectableSensors.size - 1)
+            if(sharedPreferences.getBoolean(result.device.address + "_is_favourite", false)) {
+                if (result.device.name != null) {
+                    val sensorName =
+                        sharedPreferences.getString(result.device.address + "_name", result.device.name)
+                            .toString()
+                    val sensor = SelectableSensorItem(
+                        sensorName,
+                        result.device.address,
+                        false)
+                    selectableSensors.add(sensor)
+                    selectableSensorsAdapter.notifyItemChanged(selectableSensors.size - 1)
+                }
             }
         }
     }
