@@ -187,9 +187,28 @@
             android:padding="2dp"
             android:layout_marginTop="15dp"
             android:background="?android:attr/listDivider"
-            android:layout_toRightOf="@+id/selected_sensors_text_view"
+            android:layout_toEndOf="@+id/selected_sensors_text_view"
+            android:layout_toStartOf="@id/refresh_selected_sensors_button"
             android:layout_below="@+id/experiment_duration_radio_group"/>
 
+        <ImageButton
+            android:id="@+id/refresh_selected_sensors_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_refresh_24"
+            android:background="@color/design_default_color_primary"
+            android:layout_below="@+id/experiment_duration_radio_group"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            android:contentDescription="Refresh list of selected sensors"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/selected_sensors_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:layout_below="@+id/refresh_selected_sensors_button"/>
+        
         <Button
             android:id="@+id/confirm_button"
             android:layout_width="wrap_content"
