@@ -4,7 +4,8 @@ class ExperimentManifest(
     var keyGenerationMode: KeyGenerationMode = KeyGenerationMode.SIMULTANEOUS,
     var quantizationFunction: QuantizationFunction = QuantizationFunction.TWO_LEVEL,
     var experimentDuration: ExperimentDuration = ExperimentDuration.THIRTY_SECONDS,
-    var gesture: Gesture = Gesture.STATIONARY
+    var gesture: Gesture = Gesture.STATIONARY,
+    var split: Split = Split.NO
 )
 
 enum class KeyGenerationMode(val id: Int) {
@@ -31,4 +32,9 @@ enum class Gesture {
     TILTING,
     HOLDING,
     MOVING_TOWARDS_AND_AWAY
+}
+
+enum class Split {
+    YES,
+    NO
 }

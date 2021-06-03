@@ -84,13 +84,14 @@ class ExperimentPlannerFragment : Fragment() {
                 2 -> experimentManifest.keyGenerationMode = KeyGenerationMode.CONSECUTIVELY
                 3 -> experimentManifest.quantizationFunction = QuantizationFunction.TWO_LEVEL
                 4 -> experimentManifest.quantizationFunction = QuantizationFunction.MULTI_LEVEL
-                5 -> experimentManifest.experimentDuration = ExperimentDuration.THIRTY_SECONDS
-                6 -> experimentManifest.experimentDuration = ExperimentDuration.SIXTY_SECONDS
-                7 -> experimentManifest.experimentDuration = ExperimentDuration.NINETY_SECONDS
+                5 -> experimentManifest.split = Split.YES
+                6 -> experimentManifest.split = Split.NO
+                7 -> experimentManifest.experimentDuration = ExperimentDuration.THIRTY_SECONDS
+                8 -> experimentManifest.experimentDuration = ExperimentDuration.SIXTY_SECONDS
+                9 -> experimentManifest.experimentDuration = ExperimentDuration.NINETY_SECONDS
             }
         }
         experimentManifest.gesture = Gesture.values()[binding.gestureSpinner.selectedItemId.toInt()]
-        Log.d("Experiment", experimentManifest.gesture.name)
     }
 
     private fun scanForDevices(context: Context) {

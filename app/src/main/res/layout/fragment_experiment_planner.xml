@@ -105,13 +105,13 @@
             android:layout_below="@+id/gesture_text_view"/>
 
         <TextView
-            android:id="@+id/group_size_text_view"
+            android:id="@+id/split_into_groups_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5sp"
             android:textColor="@color/black"
             android:layout_below="@+id/gesture_spinner"
-            android:text="Group Size During Experiment"/>
+            android:text="Split Sensors Into Groups"/>
 
         <View
             android:layout_width="match_parent"
@@ -120,15 +120,25 @@
             android:layout_marginTop="15dp"
             android:background="?android:attr/listDivider"
             android:layout_below="@+id/gesture_spinner"
-            android:layout_toEndOf="@+id/group_size_text_view"/>
+            android:layout_toEndOf="@+id/split_into_groups_text_view"/>
 
-        <EditText
-            android:id="@+id/group_size_edit_text"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/split_into_groups_radio_group"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_margin="5dp"
-            android:layout_below="@id/group_size_text_view"
-            android:inputType="number" />
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/split_into_groups_text_view">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"/>
+        </RadioGroup>
 
         <TextView
             android:id="@+id/experiment_duration_text_view"
@@ -136,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5sp"
             android:textColor="@color/black"
-            android:layout_below="@+id/group_size_edit_text"
+            android:layout_below="@+id/split_into_groups_radio_group"
             android:text="Maximum Experiment Duration"/>
 
         <View
@@ -145,7 +155,7 @@
             android:padding="2dp"
             android:layout_marginTop="15dp"
             android:background="?android:attr/listDivider"
-            android:layout_below="@+id/group_size_edit_text"
+            android:layout_below="@+id/split_into_groups_radio_group"
             android:layout_toEndOf="@+id/experiment_duration_text_view"/>
 
         <RadioGroup
