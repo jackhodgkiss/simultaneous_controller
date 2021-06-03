@@ -89,7 +89,8 @@ class ExperimentPlannerFragment : Fragment() {
                 7 -> experimentManifest.experimentDuration = ExperimentDuration.NINETY_SECONDS
             }
         }
-        Log.d("Experiment", experimentManifest.experimentDuration.name)
+        experimentManifest.gesture = Gesture.values()[binding.gestureSpinner.selectedItemId.toInt()]
+        Log.d("Experiment", experimentManifest.gesture.name)
     }
 
     private fun scanForDevices(context: Context) {
