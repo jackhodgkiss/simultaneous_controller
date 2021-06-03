@@ -25,10 +25,13 @@ class SelectableSensorAdapter(private val sensors: ArrayList<SelectableSensorIte
 
     class SelectableSensorViewHolder(private val itemBinding: SelectableSensorItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bindSensor(selectableSensorItem: SelectableSensorItem) {
-            var selectedCheckbox = itemBinding.selectedCheckbox
+            val selectedCheckbox = itemBinding.selectedCheckbox
             itemBinding.sensorNameTextView.text = selectableSensorItem.name
             itemBinding.sensorAddressTextView.text = selectableSensorItem.address
             itemBinding.selectedCheckbox.isChecked = false
+            selectedCheckbox.setOnClickListener {
+                selectableSensorItem.isSelected = selectedCheckbox.isChecked
+            }
         }
     }
 }

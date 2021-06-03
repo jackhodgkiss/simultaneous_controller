@@ -5,7 +5,8 @@ class ExperimentManifest(
     var quantizationFunction: QuantizationFunction = QuantizationFunction.TWO_LEVEL,
     var experimentDuration: ExperimentDuration = ExperimentDuration.THIRTY_SECONDS,
     var gesture: Gesture = Gesture.STATIONARY,
-    var split: Split = Split.NO
+    var split: Split = Split.NO,
+    var selectedSensors: ArrayList<String> = ArrayList<String>()
 )
 
 enum class KeyGenerationMode(val id: Int) {

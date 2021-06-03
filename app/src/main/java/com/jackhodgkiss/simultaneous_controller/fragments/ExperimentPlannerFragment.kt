@@ -92,6 +92,12 @@ class ExperimentPlannerFragment : Fragment() {
             }
         }
         experimentManifest.gesture = Gesture.values()[binding.gestureSpinner.selectedItemId.toInt()]
+        selectableSensors.forEach { sensor ->
+            if (sensor.isSelected) {
+                experimentManifest.selectedSensors.add(sensor.address)
+            }
+        }
+        experimentManifest.selectedSensors.forEach { address -> Log.d("Experiment", address) }
     }
 
     private fun scanForDevices(context: Context) {
