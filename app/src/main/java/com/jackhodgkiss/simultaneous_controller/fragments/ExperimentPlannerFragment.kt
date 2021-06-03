@@ -20,9 +20,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.jackhodgkiss.simultaneous_controller.R
-import com.jackhodgkiss.simultaneous_controller.SelectableSensorAdapter
-import com.jackhodgkiss.simultaneous_controller.SelectableSensorItem
+import com.jackhodgkiss.simultaneous_controller.*
 import com.jackhodgkiss.simultaneous_controller.databinding.FragmentExperimentPlannerBinding
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
@@ -64,7 +62,34 @@ class ExperimentPlannerFragment : Fragment() {
             scanForDevices(view.context)
         }
         sharedPreferences =
-            view.context.getSharedPreferences(R.string.preference_file_key.toString(), Context.MODE_PRIVATE)
+            view.context.getSharedPreferences(
+                R.string.preference_file_key.toString(),
+                Context.MODE_PRIVATE
+            )
+        binding.confirmButton.setOnClickListener {
+            confirmExperiment()
+        }
+    }
+
+    private fun confirmExperiment() {
+        val experimentManifest = ExperimentManifest()
+        val radioGroups = arrayOf(
+            binding.keyGenerationModeRadioGroup,
+            binding.quantizationFunctionRadioGroup,
+            binding.experimentDurationRadioGroup
+        )
+        radioGroups.forEach { element ->
+            when (element.checkedRadioButtonId) {
+                1 -> experimentManifest.keyGenerationMode = KeyGenerationMode.SIMULTANEOUS
+                2 -> experimentManifest.keyGenerationMode = KeyGenerationMode.CONSECUTIVELY
+                3 -> experimentManifest.quantizationFunction = QuantizationFunction.TWO_LEVEL
+                4 -> experimentManifest.quantizationFunction = QuantizationFunction.MULTI_LEVEL
+                5 -> experimentManifest.experimentDuration = ExperimentDuration.THIRTY_SECONDS
+                6 -> experimentManifest.experimentDuration = ExperimentDuration.SIXTY_SECONDS
+                7 -> experimentManifest.experimentDuration = ExperimentDuration.NINETY_SECONDS
+            }
+        }
+        Log.d("Experiment", experimentManifest.experimentDuration.name)
     }
 
     private fun scanForDevices(context: Context) {
@@ -102,15 +127,19 @@ class ExperimentPlannerFragment : Fragment() {
 
     private fun handleResult(result: ScanResult) {
         if (!selectableSensors.any { sensor -> sensor.address == result.device.address }) {
-            if(sharedPreferences.getBoolean(result.device.address + "_is_favourite", false)) {
+            if (sharedPreferences.getBoolean(result.device.address + "_is_favourite", false)) {
                 if (result.device.name != null) {
                     val sensorName =
-                        sharedPreferences.getString(result.device.address + "_name", result.device.name)
+                        sharedPreferences.getString(
+                            result.device.address + "_name",
+                            result.device.name
+                        )
                             .toString()
                     val sensor = SelectableSensorItem(
                         sensorName,
                         result.device.address,
-                        false)
+                        false
+                    )
                     selectableSensors.add(sensor)
                     selectableSensorsAdapter.notifyItemChanged(selectableSensors.size - 1)
                 }
