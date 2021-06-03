@@ -98,6 +98,7 @@ class ExperimentPlannerFragment : Fragment() {
             }
         }
         experimentManifest.selectedSensors.forEach { address -> Log.d("Experiment", address) }
+        context?.let { experimentManifest.showAlertMessage(it) }
     }
 
     private fun scanForDevices(context: Context) {

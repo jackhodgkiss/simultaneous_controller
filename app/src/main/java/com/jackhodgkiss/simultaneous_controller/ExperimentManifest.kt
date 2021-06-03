@@ -1,5 +1,9 @@
 package com.jackhodgkiss.simultaneous_controller
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+
 class ExperimentManifest(
     var keyGenerationMode: KeyGenerationMode = KeyGenerationMode.SIMULTANEOUS,
     var quantizationFunction: QuantizationFunction = QuantizationFunction.TWO_LEVEL,
@@ -7,7 +11,24 @@ class ExperimentManifest(
     var gesture: Gesture = Gesture.STATIONARY,
     var split: Split = Split.NO,
     var selectedSensors: ArrayList<String> = ArrayList<String>()
-)
+) {
+    public fun showAlertMessage(context: Context) {
+        var builder = AlertDialog.Builder(context)
+        builder.setTitle("Experiment Manifest")
+        builder.setMessage("The following key generation and agreement experiment will done in ${keyGenerationMode.name} with a ${quantizationFunction.name} quantization function. During which the ${gesture.name} will be performed ${experimentDuration.name}. The following sensors will be used: ${selectedSensors.joinToString(", ")}")
+        builder.setPositiveButton("OK", object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                dialog?.cancel()
+            }
+        })
+        builder.setNegativeButton("Cancel", object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                dialog?.cancel()
+            }
+        })
+        builder.show()
+    }
+}
 
 enum class KeyGenerationMode(val id: Int) {
     SIMULTANEOUS(1),
