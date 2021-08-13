@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.*
 import com.jackhodgkiss.simultaneous_controller.databinding.FragmentExperimentPlannerBinding
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class ExperimentPlannerFragment : Fragment() {
     private val selectableSensors: ArrayList<SelectableSensorItem> = ArrayList()
@@ -107,20 +106,14 @@ class ExperimentPlannerFragment : Fragment() {
             val enableBTIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBTIntent, REQUEST_ENABLE_BT)
         } else {
-            context.runWithPermissions(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN
-            ) {
-                selectableSensors.clear()
-                selectableSensorsAdapter.notifyDataSetChanged()
-                val settings =
-                    ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
-                adapter.bluetoothLeScanner.startScan(null, settings, callback)
-                Handler(Looper.getMainLooper()).postDelayed({
-                    adapter.bluetoothLeScanner.stopScan(callback)
-                }, 10_000)
-            }
+            selectableSensors.clear()
+            selectableSensorsAdapter.notifyDataSetChanged()
+            val settings =
+                ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
+            adapter.bluetoothLeScanner.startScan(null, settings, callback)
+            Handler(Looper.getMainLooper()).postDelayed({
+                adapter.bluetoothLeScanner.stopScan(callback)
+            }, 10_000)
         }
     }
 

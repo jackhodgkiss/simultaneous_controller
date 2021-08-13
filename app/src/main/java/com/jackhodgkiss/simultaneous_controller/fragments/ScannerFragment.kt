@@ -23,7 +23,6 @@ import com.jackhodgkiss.simultaneous_controller.R
 import com.jackhodgkiss.simultaneous_controller.SensorAdapter
 import com.jackhodgkiss.simultaneous_controller.SensorItem
 import com.jackhodgkiss.simultaneous_controller.databinding.FragmentScannerBinding
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class ScannerFragment : Fragment() {
     private val sensors: ArrayList<SensorItem> = ArrayList()
@@ -67,23 +66,17 @@ class ScannerFragment : Fragment() {
             val enableBTIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBTIntent, REQUEST_ENABLE_BT)
         } else {
-            context.runWithPermissions(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN
-            ) {
-                sensors.clear()
-                sensorAdapter.notifyDataSetChanged()
-                val settings =
-                    ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
-                adapter.bluetoothLeScanner.startScan(null, settings, callback)
-                toggleNoticeVisibility(true)
-                Handler(Looper.getMainLooper()).postDelayed({
-                    adapter.bluetoothLeScanner.stopScan(callback)
-                    swipeContainer.isRefreshing = false
-                    toggleNoticeVisibility()
-                }, 10_000)
-            }
+            sensors.clear()
+            sensorAdapter.notifyDataSetChanged()
+            val settings =
+                ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
+            adapter.bluetoothLeScanner.startScan(null, settings, callback)
+            toggleNoticeVisibility(true)
+            Handler(Looper.getMainLooper()).postDelayed({
+                adapter.bluetoothLeScanner.stopScan(callback)
+                swipeContainer.isRefreshing = false
+                toggleNoticeVisibility()
+            }, 10_000)
         }
     }
 
