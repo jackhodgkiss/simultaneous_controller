@@ -2,10 +2,12 @@ package com.jackhodgkiss.simultaneous_controller.fragments
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
+import android.content.Context.BLUETOOTH_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -16,6 +18,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -54,30 +58,28 @@ class ScannerFragment : Fragment() {
         sensorRecyclerView.layoutManager = LinearLayoutManager(view.context)
         sensorRecyclerView.itemAnimator = null
         swipeContainer.setOnRefreshListener {
-            scanForDevices(view.context)
+            requestPermissions.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADMIN
+                )
+            )
         }
         sharedPreferences =
             view.context.getSharedPreferences(R.string.preference_file_key.toString(), Context.MODE_PRIVATE)
     }
 
     private fun scanForDevices(context: Context) {
-        val adapter = BluetoothAdapter.getDefaultAdapter()
-        if (adapter != null && !adapter.isEnabled) {
-            val enableBTIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(enableBTIntent, REQUEST_ENABLE_BT)
-        } else {
-            sensors.clear()
-            sensorAdapter.notifyDataSetChanged()
-            val settings =
-                ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
-            adapter.bluetoothLeScanner.startScan(null, settings, callback)
-            toggleNoticeVisibility(true)
-            Handler(Looper.getMainLooper()).postDelayed({
-                adapter.bluetoothLeScanner.stopScan(callback)
-                swipeContainer.isRefreshing = false
-                toggleNoticeVisibility()
-            }, 10_000)
-        }
+        val bluetoothManager = context.getSystemService(BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothAdapter = bluetoothManager.adapter
+        val settings = ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
+        bluetoothAdapter.bluetoothLeScanner.startScan(null, settings, callback)
+        Handler(Looper.getMainLooper()).postDelayed({
+            bluetoothAdapter.bluetoothLeScanner.stopScan(callback)
+            swipeContainer.isRefreshing = false
+        }, 5_000)
     }
 
     private val callback = object : ScanCallback() {
@@ -119,6 +121,15 @@ class ScannerFragment : Fragment() {
             noticeTextView.visibility = View.VISIBLE
         } else {
             noticeTextView.visibility = View.GONE
+        }
+    }
+
+    private val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        if(permissions.values.all { value -> value == true}) {
+            view?.let { scanForDevices(it.context) }
+        } else {
+            swipeContainer.isRefreshing = false
+            Toast.makeText(view?.context, "Permissions Not Granted!", Toast.LENGTH_SHORT).show()
         }
     }
 
