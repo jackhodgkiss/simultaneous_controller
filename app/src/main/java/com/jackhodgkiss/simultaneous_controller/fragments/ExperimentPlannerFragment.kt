@@ -107,9 +107,7 @@ class ExperimentPlannerFragment : Fragment() {
             }
         }
         experimentManifest.selectedSensors.forEach { address -> Log.d("Experiment", address) }
-        // context?.let { experimentManifest.showAlertMessage(it) }
-        val intent = Intent(view?.context, ExperimentActivity::class.java)
-        startActivity(intent)
+        context?.let { experimentManifest.showAlertMessage(it) }
     }
 
     private fun scanForDevices(context: Context) {

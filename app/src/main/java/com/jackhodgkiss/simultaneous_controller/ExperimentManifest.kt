@@ -3,6 +3,8 @@ package com.jackhodgkiss.simultaneous_controller
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 
 class ExperimentManifest(
     var keyGenerationMode: KeyGenerationMode = KeyGenerationMode.SIMULTANEOUS,
@@ -12,12 +14,14 @@ class ExperimentManifest(
     var split: Split = Split.NO,
     var selectedSensors: ArrayList<String> = ArrayList<String>()
 ) {
-    public fun showAlertMessage(context: Context) {
-        var builder = AlertDialog.Builder(context)
+    fun showAlertMessage(context: Context) {
+        val builder = AlertDialog.Builder(context)
         builder.setTitle("Experiment Manifest")
         builder.setMessage("The following key generation and agreement experiment will done in ${keyGenerationMode.name} with a ${quantizationFunction.name} quantization function. During which the ${gesture.name} will be performed ${experimentDuration.name}. The following sensors will be used: ${selectedSensors.joinToString(", ")}")
         builder.setPositiveButton("OK", object : DialogInterface.OnClickListener {
             override fun onClick(dialog: DialogInterface?, which: Int) {
+                val intent = Intent(context, ExperimentActivity::class.java)
+                startActivity(context, intent, null)
                 dialog?.cancel()
             }
         })
