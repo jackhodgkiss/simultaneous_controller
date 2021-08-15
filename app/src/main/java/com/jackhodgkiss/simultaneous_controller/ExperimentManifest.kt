@@ -4,8 +4,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Parcelable
 import androidx.core.content.ContextCompat.startActivity
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 class ExperimentManifest(
     var keyGenerationMode: KeyGenerationMode = KeyGenerationMode.SIMULTANEOUS,
     var quantizationFunction: QuantizationFunction = QuantizationFunction.TWO_LEVEL,
@@ -13,7 +16,7 @@ class ExperimentManifest(
     var gesture: Gesture = Gesture.STATIONARY,
     var split: Split = Split.NO,
     var selectedSensors: ArrayList<String> = ArrayList<String>()
-) {
+) : Parcelable {
     fun showAlertMessage(context: Context) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Experiment Manifest")
@@ -21,6 +24,7 @@ class ExperimentManifest(
         builder.setPositiveButton("OK", object : DialogInterface.OnClickListener {
             override fun onClick(dialog: DialogInterface?, which: Int) {
                 val intent = Intent(context, ExperimentActivity::class.java)
+                intent.putExtra("Manifest", this@ExperimentManifest)
                 startActivity(context, intent, null)
                 dialog?.cancel()
             }
