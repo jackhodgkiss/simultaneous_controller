@@ -3,6 +3,7 @@ package com.jackhodgkiss.simultaneous_controller
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -19,7 +20,27 @@ class ExperimentActivity : AppCompatActivity() {
         setContentView(binding.root)
         manifest = intent.getParcelableExtra<ExperimentManifest>("Manifest")!!
         binding.gestureTextView.text = manifest.gesture.toString()
-        binding.timeTextView.text = "Time: ${manifest.experimentDuration}"
+        when (manifest.experimentDuration) {
+            ExperimentDuration.THIRTY_SECONDS -> binding.timeChronometer.base =
+                SystemClock.elapsedRealtime() + (30 * 1000)
+            ExperimentDuration.SIXTY_SECONDS -> binding.timeChronometer.base =
+                SystemClock.elapsedRealtime() + (60 * 1000)
+            ExperimentDuration.NINETY_SECONDS -> binding.timeChronometer.base =
+                SystemClock.elapsedRealtime() + (90 * 1000)
+        }
+        binding.timeChronometer.setOnChronometerTickListener {
+            if ("00:00" == binding.timeChronometer.text) {
+                experimentFinished()
+            }
+        }
+        binding.startButton.setOnClickListener { startExperiment() }
     }
 
+    private fun startExperiment() {
+        binding.timeChronometer.start()
+    }
+
+    private fun experimentFinished() {
+
+    }
 }
