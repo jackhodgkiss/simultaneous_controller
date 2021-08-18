@@ -1,14 +1,17 @@
 package com.jackhodgkiss.simultaneous_controller
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.ExperimentSensorItemBinding
 
-class ExperimentSensorAdapter(private val sensors: ArrayList<ExperimentSensorItem>) : RecyclerView.Adapter<ExperimentSensorAdapter.ExperimentSensorViewHolder>() {
+class ExperimentSensorAdapter(private val sensors: ArrayList<ExperimentSensorItem>) :
+    RecyclerView.Adapter<ExperimentSensorAdapter.ExperimentSensorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExperimentSensorViewHolder {
-        val itemBinding = ExperimentSensorItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding =
+            ExperimentSensorItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ExperimentSensorViewHolder(itemBinding)
     }
 
@@ -20,9 +23,15 @@ class ExperimentSensorAdapter(private val sensors: ArrayList<ExperimentSensorIte
 
     override fun getItemId(position: Int) = sensors[position].hashCode().toLong()
 
-    class ExperimentSensorViewHolder(private val itemBinding: ExperimentSensorItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+    class ExperimentSensorViewHolder(private val itemBinding: ExperimentSensorItemBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
         fun bindSensor(experimentSensorItem: ExperimentSensorItem) {
-            itemBinding.sensorNameTextView.text = experimentSensorItem.name
+            val sharedPreferences = itemBinding.sensorNameTextView.context.getSharedPreferences(
+                R.string.preference_file_key.toString(),
+                Context.MODE_PRIVATE
+            )
+            itemBinding.sensorNameTextView.text =
+                sharedPreferences.getString(experimentSensorItem.address + "_name", "N/A")
         }
     }
 }

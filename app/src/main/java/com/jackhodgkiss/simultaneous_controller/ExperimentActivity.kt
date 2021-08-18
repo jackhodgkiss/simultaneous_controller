@@ -25,12 +25,13 @@ class ExperimentActivity : AppCompatActivity() {
                 experimentFinished()
             }
         }
-        val experimentSensors = arrayListOf<ExperimentSensorItem>(
-            ExperimentSensorItem("Sensor 1"),
-            ExperimentSensorItem("Sensor 2")
-        )
+        val experimentSensors = mutableListOf<ExperimentSensorItem>()
+        for (sensor in manifest.selectedSensors) {
+            experimentSensors.add(ExperimentSensorItem(sensor))
+        }
         experimentSensorRecyclerView = binding.sensorRecyclerView
-        experimentSensorAdapter = ExperimentSensorAdapter(experimentSensors)
+        experimentSensorAdapter =
+            ExperimentSensorAdapter(experimentSensors as ArrayList<ExperimentSensorItem>)
         experimentSensorAdapter.setHasStableIds(true)
         experimentSensorRecyclerView.adapter = experimentSensorAdapter
         experimentSensorRecyclerView.layoutManager = LinearLayoutManager(this)
