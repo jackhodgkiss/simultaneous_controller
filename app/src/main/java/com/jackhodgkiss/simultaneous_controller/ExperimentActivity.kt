@@ -1,18 +1,17 @@
 package com.jackhodgkiss.simultaneous_controller
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.AttributeSet
-import android.util.Log
-import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.ActivityExperimentBinding
 
 class ExperimentActivity : AppCompatActivity() {
-
-    lateinit var manifest: ExperimentManifest
-    lateinit var binding: ActivityExperimentBinding
+    private lateinit var manifest: ExperimentManifest
+    private lateinit var binding: ActivityExperimentBinding
+    private lateinit var experimentSensorRecyclerView: RecyclerView
+    private lateinit var experimentSensorAdapter: ExperimentSensorAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +25,16 @@ class ExperimentActivity : AppCompatActivity() {
                 experimentFinished()
             }
         }
+        val experimentSensors = arrayListOf<ExperimentSensorItem>(
+            ExperimentSensorItem("Sensor 1"),
+            ExperimentSensorItem("Sensor 2")
+        )
+        experimentSensorRecyclerView = binding.sensorRecyclerView
+        experimentSensorAdapter = ExperimentSensorAdapter(experimentSensors)
+        experimentSensorAdapter.setHasStableIds(true)
+        experimentSensorRecyclerView.adapter = experimentSensorAdapter
+        experimentSensorRecyclerView.layoutManager = LinearLayoutManager(this)
+        experimentSensorRecyclerView.itemAnimator = null
         binding.startButton.setOnClickListener { startExperiment() }
     }
 
