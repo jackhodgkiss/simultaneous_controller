@@ -20,14 +20,7 @@ class ExperimentActivity : AppCompatActivity() {
         setContentView(binding.root)
         manifest = intent.getParcelableExtra<ExperimentManifest>("Manifest")!!
         binding.gestureTextView.text = manifest.gesture.toString()
-        when (manifest.experimentDuration) {
-            ExperimentDuration.THIRTY_SECONDS -> binding.timeChronometer.base =
-                SystemClock.elapsedRealtime() + (30 * 1000)
-            ExperimentDuration.SIXTY_SECONDS -> binding.timeChronometer.base =
-                SystemClock.elapsedRealtime() + (60 * 1000)
-            ExperimentDuration.NINETY_SECONDS -> binding.timeChronometer.base =
-                SystemClock.elapsedRealtime() + (90 * 1000)
-        }
+        setChronometer()
         binding.timeChronometer.setOnChronometerTickListener {
             if ("00:00" == binding.timeChronometer.text) {
                 experimentFinished()
@@ -36,7 +29,19 @@ class ExperimentActivity : AppCompatActivity() {
         binding.startButton.setOnClickListener { startExperiment() }
     }
 
+    private fun setChronometer() {
+        when (manifest.experimentDuration) {
+            ExperimentDuration.THIRTY_SECONDS -> binding.timeChronometer.base =
+                SystemClock.elapsedRealtime() + (30 * 1000)
+            ExperimentDuration.SIXTY_SECONDS -> binding.timeChronometer.base =
+                SystemClock.elapsedRealtime() + (60 * 1000)
+            ExperimentDuration.NINETY_SECONDS -> binding.timeChronometer.base =
+                SystemClock.elapsedRealtime() + (90 * 1000)
+        }
+    }
+
     private fun startExperiment() {
+        setChronometer()
         binding.timeChronometer.start()
     }
 
