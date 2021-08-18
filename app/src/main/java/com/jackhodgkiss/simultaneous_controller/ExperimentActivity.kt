@@ -27,7 +27,7 @@ class ExperimentActivity : AppCompatActivity() {
         }
         val experimentSensors = mutableListOf<ExperimentSensorItem>()
         for (sensor in manifest.selectedSensors) {
-            experimentSensors.add(ExperimentSensorItem(sensor))
+            experimentSensors.add(ExperimentSensorItem(sensor.value, sensor.key))
         }
         experimentSensorRecyclerView = binding.sensorRecyclerView
         experimentSensorAdapter =

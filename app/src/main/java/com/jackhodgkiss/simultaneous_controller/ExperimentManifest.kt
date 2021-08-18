@@ -15,12 +15,12 @@ class ExperimentManifest(
     var experimentDuration: ExperimentDuration = ExperimentDuration.THIRTY_SECONDS,
     var gesture: Gesture = Gesture.STATIONARY,
     var split: Split = Split.NO,
-    var selectedSensors: ArrayList<String> = ArrayList<String>()
+    var selectedSensors: MutableMap<String, String> = mutableMapOf()
 ) : Parcelable {
     fun showAlertMessage(context: Context) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Experiment Manifest")
-        builder.setMessage("The following key generation and agreement experiment will done in ${keyGenerationMode.name} with a ${quantizationFunction.name} quantization function. During which the ${gesture.name} will be performed ${experimentDuration.name}. The following sensors will be used: ${selectedSensors.joinToString(", ")}")
+        builder.setMessage("The following key generation and agreement experiment will done in ${keyGenerationMode.name} with a ${quantizationFunction.name} quantization function. During which the ${gesture.name} will be performed ${experimentDuration.name}.")
         builder.setPositiveButton("OK", object : DialogInterface.OnClickListener {
             override fun onClick(dialog: DialogInterface?, which: Int) {
                 val intent = Intent(context, ExperimentActivity::class.java)

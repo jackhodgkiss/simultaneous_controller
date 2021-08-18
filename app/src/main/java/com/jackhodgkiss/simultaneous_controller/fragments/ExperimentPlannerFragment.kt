@@ -103,10 +103,9 @@ class ExperimentPlannerFragment : Fragment() {
         experimentManifest.gesture = Gesture.values()[binding.gestureSpinner.selectedItemId.toInt()]
         selectableSensors.forEach { sensor ->
             if (sensor.isSelected) {
-                experimentManifest.selectedSensors.add(sensor.address)
+                experimentManifest.selectedSensors[sensor.address] = sensor.name
             }
         }
-        experimentManifest.selectedSensors.forEach { address -> Log.d("Experiment", address) }
         context?.let { experimentManifest.showAlertMessage(it) }
     }
 
