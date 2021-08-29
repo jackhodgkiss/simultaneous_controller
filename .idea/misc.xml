@@ -3,7 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Jack/PhD/simultaneous_controller/app/src/main/res/layout/activity_experiment.xml" value="0.3" />
+        <entry key="..\:/Users/Jack/PhD/simultaneous_controller/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/Jack/PhD/simultaneous_controller/app/src/main/res/layout/experiment_sensor_item.xml" value="0.268" />
+        <entry key="..\:/Users/Jack/PhD/simultaneous_controller/app/src/main/res/layout/fragment_experiment.xml" value="0.1" />
+        <entry key="..\:/Users/Jack/PhD/simultaneous_controller/app/src/main/res/layout/fragment_experiment_planner.xml" value="0.2546875" />
         <entry key="..\:/Users/Jack/PhD/simultaneous_controller/app/src/main/res/layout/fragment_scanner.xml" value="0.2546875" />
+        <entry key="..\:/Users/Jack/PhD/simultaneous_controller/app/src/main/res/layout/selectable_sensor_item.xml" value="0.2" />
+        <entry key="..\:/Users/Jack/PhD/simultaneous_controller/app/src/main/res/menu/navigation.xml" value="0.268" />
       </map>
     </option>
   </component>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ExperimentActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/gesture_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:textSize="16dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black"
+            android:text="Gesture: "/>
+
+        <Chronometer
+            android:id="@+id/time_chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="48dp"
+            android:layout_centerHorizontal="true"
+            android:countDown="true"
+            android:layout_below="@id/gesture_text_view">
+        </Chronometer>
+
+        <TextView
+            android:id="@+id/sensors_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3sp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/time_chronometer"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Sensors"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:padding="2dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:attr/listDivider"
+            android:layout_toEndOf="@+id/sensors_text_view"
+            android:layout_below="@+id/time_chronometer"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sensor_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/sensors_text_view"
+            android:layout_above="@id/start_button"
+            android:scrollbars="vertical" />
+
+        <Button
+            android:id="@+id/start_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="START"
+            android:layout_margin="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+</FrameLayout>
