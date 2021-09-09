@@ -3,6 +3,7 @@ package com.jackhodgkiss.simultaneous_controller
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.ActivityExperimentBinding
@@ -12,6 +13,7 @@ class ExperimentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityExperimentBinding
     private lateinit var experimentSensorRecyclerView: RecyclerView
     private lateinit var experimentSensorAdapter: ExperimentSensorAdapter
+    private val experimentSensors = mutableListOf<ExperimentSensorItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +27,6 @@ class ExperimentActivity : AppCompatActivity() {
                 experimentFinished()
             }
         }
-        val experimentSensors = mutableListOf<ExperimentSensorItem>()
         for (sensor in manifest.selectedSensors) {
             experimentSensors.add(ExperimentSensorItem(sensor.value, sensor.key))
         }
@@ -36,6 +37,7 @@ class ExperimentActivity : AppCompatActivity() {
         experimentSensorRecyclerView.adapter = experimentSensorAdapter
         experimentSensorRecyclerView.layoutManager = LinearLayoutManager(this)
         experimentSensorRecyclerView.itemAnimator = null
+        binding.connectButton.setOnClickListener { connectDevices() }
         binding.startButton.setOnClickListener { startExperiment() }
     }
 
@@ -47,6 +49,12 @@ class ExperimentActivity : AppCompatActivity() {
                 SystemClock.elapsedRealtime() + (60 * 1000)
             ExperimentDuration.NINETY_SECONDS -> binding.timeChronometer.base =
                 SystemClock.elapsedRealtime() + (90 * 1000)
+        }
+    }
+
+    private fun connectDevices() {
+        for(experimentSensor in experimentSensors) {
+            Log.d("BLE", experimentSensor.address);
         }
     }
 
