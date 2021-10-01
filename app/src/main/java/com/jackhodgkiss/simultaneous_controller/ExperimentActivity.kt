@@ -1,5 +1,9 @@
 package com.jackhodgkiss.simultaneous_controller
 
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothGatt
+import android.bluetooth.BluetoothGattCallback
+import android.bluetooth.BluetoothManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
@@ -53,9 +57,19 @@ class ExperimentActivity : AppCompatActivity() {
     }
 
     private fun connectDevices() {
-        for(experimentSensor in experimentSensors) {
-            Log.d("BLE", experimentSensor.address);
+        val sensorAddress = experimentSensors[0].address
+        val bluetoothManager = this.getSystemService(BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothAdapter = bluetoothManager.adapter
+        val bluetoothDevice = bluetoothAdapter.getRemoteDevice(sensorAddress)
+        bluetoothDevice.connectGatt(this, false, gattCallback)
+    }
+
+    private val gattCallback = object : BluetoothGattCallback() {
+        override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
+            super.onConnectionStateChange(gatt, status, newState)
+            Log.d("BLE", "Connection State Changed for ${gatt?.device?.address}")
         }
+
     }
 
     private fun startExperiment() {
