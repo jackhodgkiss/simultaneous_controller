@@ -1,9 +1,6 @@
 package com.jackhodgkiss.simultaneous_controller
 
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothGatt
-import android.bluetooth.BluetoothGattCallback
-import android.bluetooth.BluetoothManager
+import android.bluetooth.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
@@ -66,10 +63,18 @@ class ExperimentActivity : AppCompatActivity() {
 
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
-            super.onConnectionStateChange(gatt, status, newState)
-            Log.d("BLE", "Connection State Changed for ${gatt?.device?.address}")
+            if(status == BluetoothGatt.GATT_SUCCESS) {
+                if(newState == BluetoothProfile.STATE_CONNECTED) {
+                    Log.d("BLE/GattCallback", "Successfully Connected to ${gatt?.device?.address}")
+                } else if(newState == BluetoothProfile.STATE_DISCONNECTED) {
+                    Log.d("BLE/GattCallback", "Successfully Disconnected from ${gatt?.device?.address}")
+                    gatt?.close()
+                }
+            } else {
+                Log.d("BLE/GattCallback", "Error $status Encountered for ${gatt?.device?.address}")
+                gatt?.close()
+            }
         }
-
     }
 
     private fun startExperiment() {
