@@ -63,16 +63,41 @@ class ExperimentActivity : AppCompatActivity() {
 
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
-            if(status == BluetoothGatt.GATT_SUCCESS) {
-                if(newState == BluetoothProfile.STATE_CONNECTED) {
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                if (newState == BluetoothProfile.STATE_CONNECTED) {
                     Log.d("BLE/GattCallback", "Successfully Connected to ${gatt?.device?.address}")
-                } else if(newState == BluetoothProfile.STATE_DISCONNECTED) {
-                    Log.d("BLE/GattCallback", "Successfully Disconnected from ${gatt?.device?.address}")
+                    gatt?.discoverServices()
+                } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                    Log.d(
+                        "BLE/GattCallback",
+                        "Successfully Disconnected from ${gatt?.device?.address}"
+                    )
                     gatt?.close()
                 }
             } else {
                 Log.d("BLE/GattCallback", "Error $status Encountered for ${gatt?.device?.address}")
                 gatt?.close()
+            }
+        }
+
+        override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
+            super.onServicesDiscovered(gatt, status)
+            Log.d("BLE/ServicesDiscovered", "Discovering Services")
+            val services = gatt?.services
+            if (services != null) {
+                if (services.isEmpty()) {
+                    return
+                }
+                services.forEach { service ->
+                    val characteristicTable = service.characteristics.joinToString(
+                        separator = "\n|--",
+                        prefix = "|--"
+                    ) { it.uuid.toString() }
+                    Log.d(
+                        "BLE/GattTable",
+                        "\nService ${service.uuid}\nCharacteristics:\n$characteristicTable"
+                    )
+                }
             }
         }
     }
