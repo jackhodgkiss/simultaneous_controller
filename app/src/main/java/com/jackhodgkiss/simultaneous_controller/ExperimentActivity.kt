@@ -114,29 +114,14 @@ class ExperimentActivity : AppCompatActivity() {
         override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
             super.onServicesDiscovered(gatt, status)
             Log.d("BLE/ServicesDiscovered", "Discovering Services")
-            val services = gatt?.services
-            if (services != null) {
-                if (services.isEmpty()) {
-                    return
-                }
-                writeCharacteristic(services[services.size - 1].characteristics[0], byteArrayOf(72, 101, 108, 108, 111))
-                services.forEach { service ->
-                    val characteristicTable = service.characteristics.joinToString(
-                        separator = "\n|--",
-                        prefix = "|--"
-                    ) { it.uuid.toString() }
-                    Log.d(
-                        "BLE/GattTable",
-                        "\nService ${service.uuid}\nCharacteristics:\n$characteristicTable"
-                    )
-                }
-            }
         }
     }
 
     private fun startExperiment() {
         setChronometer()
         binding.timeChronometer.start()
+        val services = sensorGatt?.services!!
+        writeCharacteristic(services[services.size - 1].characteristics[0], byteArrayOf(72, 101, 108, 108, 111))
     }
 
     private fun experimentFinished() {
