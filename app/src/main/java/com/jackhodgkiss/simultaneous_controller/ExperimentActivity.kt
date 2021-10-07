@@ -106,7 +106,10 @@ class ExperimentActivity : AppCompatActivity() {
             with(characteristic) {
                 when (status) {
                     BluetoothGatt.GATT_SUCCESS -> {
-                        Log.i("BluetoothGattCallback", "Wrote to characteristic $uuid | value: ${value.toString(Charsets.US_ASCII)}")
+                        Log.i(
+                            "BluetoothGattCallback",
+                            "Wrote to characteristic $uuid | value: ${value.toString(Charsets.US_ASCII)}"
+                        )
                     }
                     BluetoothGatt.GATT_INVALID_ATTRIBUTE_LENGTH -> {
                         Log.e("BluetoothGattCallback", "Write exceeded connection ATT MTU.")
@@ -115,19 +118,63 @@ class ExperimentActivity : AppCompatActivity() {
                         Log.e("BluetoothGattCallback", "Write not permitted for $uuid")
                     }
                     else -> {
-                        Log.e("BluetoothGattCallback", "Characteristic write filed for $uuid, error $status")
+                        Log.e(
+                            "BluetoothGattCallback",
+                            "Characteristic write filed for $uuid, error $status"
+                        )
                     }
                 }
             }
         }
 
+        override fun onDescriptorWrite(
+            gatt: BluetoothGatt?,
+            descriptor: BluetoothGattDescriptor?,
+            status: Int
+        ) {
+            when (status) {
+                BluetoothGatt.GATT_SUCCESS -> Log.d(
+                    "BluetoothDescriptorWrite",
+                    "Successfully written to descriptor ${descriptor?.uuid}"
+                )
+            }
+        }
+
+        override fun onCharacteristicChanged(
+            gatt: BluetoothGatt,
+            characteristic: BluetoothGattCharacteristic
+        ) {
+            with(characteristic) {
+                Log.d(
+                    "BluetoothCharacteristic",
+                    "Characteristic $uuid | value: ${value.toString(Charsets.US_ASCII)}"
+                )
+            }
+            gatt.readRemoteRssi()
+        }
+
+        override fun onReadRemoteRssi(gatt: BluetoothGatt, rssi: Int, status: Int) {
+            Log.d("BluetoothRSSI", "RSSI: $rssi")
+        }
+
         override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
             with(gatt) {
-                Log.w("BluetoothGattCallback", "Discovered ${services.size} services for ${device.address}")
+                Log.w(
+                    "BluetoothGattCallback",
+                    "Discovered ${services.size} services for ${device.address}"
+                )
                 printGattTable()
+                val serialServiceUUID = UUID.fromString("f000c0c0-0451-4000-b000-000000000000")
+                val dataOutUUID = UUID.fromString("f000c0c2-0451-4000-b000-000000000000")
+                val dataOutCharacteristic =
+                    bluetoothGatt.getService(serialServiceUUID).getCharacteristic(dataOutUUID)
+                enableNotifications(dataOutCharacteristic)
             }
         }
     }
+
+    fun ByteArray.toHexString(): String =
+        joinToString(separator = " ", prefix = "0x") { String.format("%02X", it) }
 
     private fun BluetoothGattCharacteristic.containsProperty(property: Int): Boolean {
         return properties and property != 0
@@ -141,6 +188,12 @@ class ExperimentActivity : AppCompatActivity() {
 
     private fun BluetoothGattCharacteristic.isWritableWithoutResponse(): Boolean =
         containsProperty(BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE)
+
+    private fun BluetoothGattCharacteristic.isIndicatable(): Boolean =
+        containsProperty(BluetoothGattCharacteristic.PROPERTY_INDICATE)
+
+    private fun BluetoothGattCharacteristic.isNotifiable(): Boolean =
+        containsProperty(BluetoothGattCharacteristic.PROPERTY_NOTIFY)
 
     private fun BluetoothGatt.printGattTable() {
         if (services.isEmpty()) {
@@ -159,7 +212,39 @@ class ExperimentActivity : AppCompatActivity() {
         }
     }
 
-    fun writeCharacteristic(characteristic: BluetoothGattCharacteristic, payload: ByteArray) {
+    private fun writeDescriptor(descriptor: BluetoothGattDescriptor, payload: ByteArray) {
+        bluetoothGatt.let { gatt ->
+            descriptor.value = payload
+            gatt.writeDescriptor(descriptor)
+        }
+    }
+
+    private fun enableNotifications(characteristic: BluetoothGattCharacteristic) {
+        val characteristicDescriptor = characteristic.descriptors[0]
+        val payload = when {
+            characteristic.isIndicatable() -> BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
+            characteristic.isNotifiable() -> BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+            else -> {
+                Log.e(
+                    "BluetoothNotifications",
+                    "${characteristic.uuid} doesn't support notifications or indications"
+                )
+            }
+        }
+        if (!bluetoothGatt.setCharacteristicNotification(characteristic, true)) {
+            Log.e(
+                "BluetoothNotifications",
+                "setCharacteristicNotification failed for ${characteristic.uuid}"
+            )
+        } else {
+            writeDescriptor(characteristicDescriptor, payload as ByteArray)
+        }
+    }
+
+    private fun writeCharacteristic(
+        characteristic: BluetoothGattCharacteristic,
+        payload: ByteArray
+    ) {
         val writeType = when {
             characteristic.isWritable() -> BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
             characteristic.isWritableWithoutResponse() -> BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
@@ -175,8 +260,9 @@ class ExperimentActivity : AppCompatActivity() {
     private fun startExperiment() {
         val serialServiceUUID = UUID.fromString("f000c0c0-0451-4000-b000-000000000000")
         val dataInUUID = UUID.fromString("f000c0c1-0451-4000-b000-000000000000")
-        val dataInCharacteristic = bluetoothGatt.getService(serialServiceUUID).getCharacteristic(dataInUUID)
-        val payload = "Hello World!".toByteArray(Charsets.US_ASCII)
+        val dataInCharacteristic =
+            bluetoothGatt.getService(serialServiceUUID).getCharacteristic(dataInUUID)
+        val payload = "Hello".toByteArray(Charsets.US_ASCII)
         writeCharacteristic(dataInCharacteristic, payload)
     }
 
