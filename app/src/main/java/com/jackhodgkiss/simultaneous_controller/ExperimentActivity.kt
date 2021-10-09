@@ -144,10 +144,15 @@ class ExperimentActivity : AppCompatActivity() {
             gatt: BluetoothGatt,
             characteristic: BluetoothGattCharacteristic
         ) {
+
             with(characteristic) {
+                var valAsBin = "0b"
+                value.forEach { it ->
+                    valAsBin = valAsBin.plus(" " + it.toUByte().toString(2))
+                }
                 Log.d(
                     "BluetoothCharacteristic",
-                    "Characteristic $uuid | value: ${value.toString(Charsets.US_ASCII)}"
+                    "Characteristic $uuid | value: $valAsBin"
                 )
             }
             gatt.readRemoteRssi()
