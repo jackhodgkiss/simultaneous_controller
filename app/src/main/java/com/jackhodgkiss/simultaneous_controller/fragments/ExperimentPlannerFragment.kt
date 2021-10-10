@@ -88,7 +88,8 @@ class ExperimentPlannerFragment : Fragment() {
         radioGroups.forEach { element ->
             when (element.checkedRadioButtonId) {
                 1 -> experimentManifest.keyGenerationMode = KeyGenerationMode.SIMULTANEOUS
-                2 -> experimentManifest.keyGenerationMode = KeyGenerationMode.CONSECUTIVELY
+                2 -> experimentManifest.keyGenerationMode = KeyGenerationMode.SIMULTANEOUS_PLUS
+                3 -> experimentManifest.keyGenerationMode = KeyGenerationMode.CONSECUTIVELY
             }
         }
         experimentManifest.gesture = Gesture.values()[binding.gestureSpinner.selectedItemId.toInt()]

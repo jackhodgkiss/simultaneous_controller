@@ -38,7 +38,8 @@ class ExperimentManifest(
 
 enum class KeyGenerationMode(val id: Int) {
     SIMULTANEOUS(1),
-    CONSECUTIVELY(2)
+    SIMULTANEOUS_PLUS(2),
+    CONSECUTIVELY(3)
 }
 
 enum class Gesture {
