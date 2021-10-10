@@ -1,4 +1,3 @@
 package com.jackhodgkiss.simultaneous_controller
 
-class ExperimentSensorItem(var name: String, var address: String) {
-}
+class ExperimentSensorItem(var name: String, var address: String, var isConnected: Boolean = false)

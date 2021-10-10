@@ -2,6 +2,7 @@ package com.jackhodgkiss.simultaneous_controller
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.ExperimentSensorItemBinding
 
@@ -10,7 +11,11 @@ class ExperimentSensorAdapter(private val sensors: ArrayList<ExperimentSensorIte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExperimentSensorViewHolder {
         val itemBinding =
-            ExperimentSensorItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            com.jackhodgkiss.simultaneous_controller.databinding.ExperimentSensorItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         return ExperimentSensorViewHolder(itemBinding)
     }
 
@@ -26,6 +31,9 @@ class ExperimentSensorAdapter(private val sensors: ArrayList<ExperimentSensorIte
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bindSensor(experimentSensorItem: ExperimentSensorItem) {
             itemBinding.sensorNameTextView.text = experimentSensorItem.name
+            if(experimentSensorItem.isConnected) {
+                itemBinding.bluetoothConnectedImageView.visibility = ImageView.VISIBLE
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.ActivityExperimentBinding
@@ -19,7 +20,7 @@ class ExperimentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityExperimentBinding
     private lateinit var experimentSensorRecyclerView: RecyclerView
     private lateinit var experimentSensorAdapter: ExperimentSensorAdapter
-    private val experimentSensors = mutableListOf<ExperimentSensorItem>()
+    private val experimentSensors = ArrayList<ExperimentSensorItem>()
     private lateinit var bluetoothGatt: BluetoothGatt
 
     private val bluetoothAdapter: BluetoothAdapter by lazy {
@@ -44,8 +45,7 @@ class ExperimentActivity : AppCompatActivity() {
             experimentSensors.add(ExperimentSensorItem(sensor.value, sensor.key))
         }
         experimentSensorRecyclerView = binding.sensorRecyclerView
-        experimentSensorAdapter =
-            ExperimentSensorAdapter(experimentSensors as ArrayList<ExperimentSensorItem>)
+        experimentSensorAdapter = ExperimentSensorAdapter(experimentSensors)
         experimentSensorAdapter.setHasStableIds(true)
         experimentSensorRecyclerView.adapter = experimentSensorAdapter
         experimentSensorRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -72,6 +72,13 @@ class ExperimentActivity : AppCompatActivity() {
                         "BluetoothGattCallback",
                         "Successfully connected to ${gatt.device.address}"
                     )
+                    runOnUiThread(Runnable {
+                        val sensor =
+                            experimentSensors.find { sensor -> sensor.address == gatt.device.address }
+                        sensor?.isConnected = true
+                        experimentSensorAdapter.notifyDataSetChanged()
+                    })
+
                     bluetoothGatt = gatt
                     Handler(Looper.getMainLooper()).post {
                         gatt.discoverServices()
