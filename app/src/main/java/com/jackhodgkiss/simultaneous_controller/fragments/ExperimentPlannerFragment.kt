@@ -1,18 +1,15 @@
 package com.jackhodgkiss.simultaneous_controller.fragments
 
 import android.Manifest
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -153,9 +150,4 @@ class ExperimentPlannerFragment : Fragment() {
                 Toast.makeText(view?.context, "Permissions Not Granted!", Toast.LENGTH_SHORT).show()
             }
         }
-
-    companion object {
-        const val REQUEST_ENABLE_BT: Int = 1
-    }
-
 }
