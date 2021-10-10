@@ -44,48 +44,12 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/quantization_function_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5sp"
-            android:textColor="@color/black"
-            android:layout_below="@+id/key_generation_mode_radio_group"
-            android:text="Select Quantization Function"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:padding="2dp"
-            android:layout_marginTop="15dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@+id/key_generation_mode_radio_group"
-            android:layout_toEndOf="@+id/quantization_function_text_view"/>
-
-        <RadioGroup
-            android:id="@+id/quantization_function_radio_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="5dp"
-            android:layout_centerInParent="true"
-            android:layout_below="@+id/quantization_function_text_view">
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2-Level"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Multi-level"/>
-        </RadioGroup>
-
-        <TextView
             android:id="@+id/gesture_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5sp"
             android:textColor="@color/black"
-            android:layout_below="@+id/quantization_function_radio_group"
+            android:layout_below="@+id/key_generation_mode_radio_group"
             android:text="Select Which Gesture Shall Be Performed"/>
 
         <View
@@ -94,7 +58,7 @@
             android:padding="2dp"
             android:layout_marginTop="15dp"
             android:background="?android:attr/listDivider"
-            android:layout_below="@+id/quantization_function_radio_group"
+            android:layout_below="@+id/key_generation_mode_radio_group"
             android:layout_toEndOf="@+id/gesture_text_view"/>
 
         <Spinner
@@ -105,88 +69,12 @@
             android:layout_below="@+id/gesture_text_view"/>
 
         <TextView
-            android:id="@+id/split_into_groups_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5sp"
-            android:textColor="@color/black"
-            android:layout_below="@+id/gesture_spinner"
-            android:text="Split Sensors Into Groups"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:padding="2dp"
-            android:layout_marginTop="15dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@+id/gesture_spinner"
-            android:layout_toEndOf="@+id/split_into_groups_text_view"/>
-
-        <RadioGroup
-            android:id="@+id/split_into_groups_radio_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="5dp"
-            android:layout_centerInParent="true"
-            android:layout_below="@+id/split_into_groups_text_view">
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No"/>
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/experiment_duration_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5sp"
-            android:textColor="@color/black"
-            android:layout_below="@+id/split_into_groups_radio_group"
-            android:text="Maximum Experiment Duration"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:padding="2dp"
-            android:layout_marginTop="15dp"
-            android:background="?android:attr/listDivider"
-            android:layout_below="@+id/split_into_groups_radio_group"
-            android:layout_toEndOf="@+id/experiment_duration_text_view"/>
-
-        <RadioGroup
-            android:id="@+id/experiment_duration_radio_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal"
-            android:layout_centerInParent="true"
-            android:layout_below="@+id/experiment_duration_text_view">
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="30 Seconds"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="60 Seconds"/>
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="90 Seconds"/>
-        </RadioGroup>
-
-        <TextView
             android:id="@+id/selectable_sensors_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="3sp"
             android:textColor="@color/black"
-            android:layout_below="@+id/experiment_duration_radio_group"
+            android:layout_below="@+id/gesture_spinner"
             android:textSize="16sp"
             android:textStyle="bold"
             android:text="Select Sensors"/>
@@ -199,7 +87,7 @@
             android:background="?android:attr/listDivider"
             android:layout_toEndOf="@+id/selectable_sensors_text_view"
             android:layout_toStartOf="@id/refresh_selectable_sensors_button"
-            android:layout_below="@+id/experiment_duration_radio_group"/>
+            android:layout_below="@+id/gesture_spinner"/>
 
         <ImageButton
             android:id="@+id/refresh_selectable_sensors_button"
@@ -207,7 +95,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_refresh_24"
             android:background="@color/design_default_color_primary"
-            android:layout_below="@+id/experiment_duration_radio_group"
+            android:layout_below="@+id/gesture_spinner"
             android:layout_alignParentEnd="true"
             android:layout_margin="5dp"
             android:contentDescription="Refresh list of selected sensors"/>

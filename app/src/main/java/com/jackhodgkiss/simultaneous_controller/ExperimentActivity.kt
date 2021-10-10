@@ -34,6 +34,7 @@ class ExperimentActivity : AppCompatActivity() {
         manifest = intent.getParcelableExtra<ExperimentManifest>("Manifest")!!
         binding.gestureTextView.text = manifest.gesture.toString()
         setChronometer()
+        binding.timeChronometer.isCountDown = true
         binding.timeChronometer.setOnChronometerTickListener {
             if ("00:00" == binding.timeChronometer.text) {
                 experimentFinished()
@@ -54,14 +55,7 @@ class ExperimentActivity : AppCompatActivity() {
     }
 
     private fun setChronometer() {
-        when (manifest.experimentDuration) {
-            ExperimentDuration.THIRTY_SECONDS -> binding.timeChronometer.base =
-                SystemClock.elapsedRealtime() + (30 * 1000)
-            ExperimentDuration.SIXTY_SECONDS -> binding.timeChronometer.base =
-                SystemClock.elapsedRealtime() + (60 * 1000)
-            ExperimentDuration.NINETY_SECONDS -> binding.timeChronometer.base =
-                SystemClock.elapsedRealtime() + (90 * 1000)
-        }
+        binding.timeChronometer.base = SystemClock.elapsedRealtime() + 60 * 1001
     }
 
     private fun connectDevices() {
@@ -263,6 +257,8 @@ class ExperimentActivity : AppCompatActivity() {
     }
 
     private fun startExperiment() {
+        setChronometer()
+        binding.timeChronometer.start()
         val serialServiceUUID = UUID.fromString("f000c0c0-0451-4000-b000-000000000000")
         val dataInUUID = UUID.fromString("f000c0c1-0451-4000-b000-000000000000")
         val dataInCharacteristic =
@@ -272,6 +268,6 @@ class ExperimentActivity : AppCompatActivity() {
     }
 
     private fun experimentFinished() {
-
+        binding.timeChronometer.stop()
     }
 }

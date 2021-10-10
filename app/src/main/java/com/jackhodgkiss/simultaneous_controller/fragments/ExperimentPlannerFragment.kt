@@ -84,20 +84,11 @@ class ExperimentPlannerFragment : Fragment() {
         val experimentManifest = ExperimentManifest()
         val radioGroups = arrayOf(
             binding.keyGenerationModeRadioGroup,
-            binding.quantizationFunctionRadioGroup,
-            binding.experimentDurationRadioGroup
         )
         radioGroups.forEach { element ->
             when (element.checkedRadioButtonId) {
                 1 -> experimentManifest.keyGenerationMode = KeyGenerationMode.SIMULTANEOUS
                 2 -> experimentManifest.keyGenerationMode = KeyGenerationMode.CONSECUTIVELY
-                3 -> experimentManifest.quantizationFunction = QuantizationFunction.TWO_LEVEL
-                4 -> experimentManifest.quantizationFunction = QuantizationFunction.MULTI_LEVEL
-                5 -> experimentManifest.split = Split.YES
-                6 -> experimentManifest.split = Split.NO
-                7 -> experimentManifest.experimentDuration = ExperimentDuration.THIRTY_SECONDS
-                8 -> experimentManifest.experimentDuration = ExperimentDuration.SIXTY_SECONDS
-                9 -> experimentManifest.experimentDuration = ExperimentDuration.NINETY_SECONDS
             }
         }
         experimentManifest.gesture = Gesture.values()[binding.gestureSpinner.selectedItemId.toInt()]
@@ -110,9 +101,11 @@ class ExperimentPlannerFragment : Fragment() {
     }
 
     private fun scanForDevices(context: Context) {
-        val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothManager =
+            context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         val bluetoothAdapter = bluetoothManager.adapter
-        val settings = ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
+        val settings =
+            ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build()
         bluetoothAdapter.bluetoothLeScanner.startScan(null, settings, callback)
         Handler(Looper.getMainLooper()).postDelayed({
             bluetoothAdapter.bluetoothLeScanner.stopScan(callback)
@@ -151,13 +144,14 @@ class ExperimentPlannerFragment : Fragment() {
         }
     }
 
-    private val requestPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        if(permissions.values.all { value -> value == true}) {
-            view?.let { scanForDevices(it.context) }
-        } else {
-            Toast.makeText(view?.context, "Permissions Not Granted!", Toast.LENGTH_SHORT).show()
+    private val requestPermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.values.all { value -> value == true }) {
+                view?.let { scanForDevices(it.context) }
+            } else {
+                Toast.makeText(view?.context, "Permissions Not Granted!", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
     companion object {
         const val REQUEST_ENABLE_BT: Int = 1

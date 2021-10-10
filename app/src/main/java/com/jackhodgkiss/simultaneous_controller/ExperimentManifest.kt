@@ -11,16 +11,14 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class ExperimentManifest(
     var keyGenerationMode: KeyGenerationMode = KeyGenerationMode.SIMULTANEOUS,
-    var quantizationFunction: QuantizationFunction = QuantizationFunction.TWO_LEVEL,
-    var experimentDuration: ExperimentDuration = ExperimentDuration.THIRTY_SECONDS,
     var gesture: Gesture = Gesture.STATIONARY,
-    var split: Split = Split.NO,
     var selectedSensors: MutableMap<String, String> = mutableMapOf()
 ) : Parcelable {
     fun showAlertMessage(context: Context) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Experiment Manifest")
-        builder.setMessage("The following key generation and agreement experiment will done in ${keyGenerationMode.name} with a ${quantizationFunction.name} quantization function. During which the ${gesture.name} will be performed ${experimentDuration.name}.")
+        builder.setMessage("The following key generation and agreement experiment will done in " +
+                "${keyGenerationMode.name}. During which the ${gesture.name} will be performed.")
         builder.setPositiveButton("OK", object : DialogInterface.OnClickListener {
             override fun onClick(dialog: DialogInterface?, which: Int) {
                 val intent = Intent(context, ExperimentActivity::class.java)
@@ -41,17 +39,6 @@ class ExperimentManifest(
 enum class KeyGenerationMode(val id: Int) {
     SIMULTANEOUS(1),
     CONSECUTIVELY(2)
-}
-
-enum class QuantizationFunction(val id: Int) {
-    TWO_LEVEL(3),
-    MULTI_LEVEL(4)
-}
-
-enum class ExperimentDuration(val id: Int) {
-    THIRTY_SECONDS(5),
-    SIXTY_SECONDS(6),
-    NINETY_SECONDS(7)
 }
 
 enum class Gesture {
