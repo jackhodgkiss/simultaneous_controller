@@ -43,11 +43,22 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:padding="2dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="15dp"
             android:background="?android:attr/listDivider"
             android:layout_toEndOf="@+id/sensors_text_view"
+            android:layout_toStartOf="@id/connect_button"
             android:layout_below="@+id/time_chronometer"/>
+
+        <Button
+            android:id="@+id/connect_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
+            android:text="Connect"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/time_chronometer"
+            android:layout_marginEnd="5sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sensor_recycler_view"
@@ -61,10 +72,13 @@
             android:id="@+id/start_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="START"
-            android:layout_margin="5dp"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="START" />
 
     </RelativeLayout>
 
