@@ -6,7 +6,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.ExperimentSensorItemBinding
 
-class ExperimentSensorAdapter(private val sensors: ArrayList<ExperimentSensorItem>) :
+class ExperimentSensorAdapter(private val connectionManager: ConnectionManager) :
     RecyclerView.Adapter<ExperimentSensorAdapter.ExperimentSensorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExperimentSensorViewHolder {
@@ -20,18 +20,18 @@ class ExperimentSensorAdapter(private val sensors: ArrayList<ExperimentSensorIte
     }
 
     override fun onBindViewHolder(holder: ExperimentSensorViewHolder, position: Int) {
-        holder.bindSensor(sensors[position])
+        holder.bindSensor(connectionManager.sensors[position])
     }
 
-    override fun getItemCount() = sensors.size
+    override fun getItemCount() = connectionManager.sensors.size
 
-    override fun getItemId(position: Int) = sensors[position].hashCode().toLong()
+    override fun getItemId(position: Int) = connectionManager.sensors[position].hashCode().toLong()
 
     class ExperimentSensorViewHolder(private val itemBinding: ExperimentSensorItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-        fun bindSensor(experimentSensorItem: ExperimentSensorItem) {
-            itemBinding.sensorNameTextView.text = experimentSensorItem.name
-            if(experimentSensorItem.isConnected) {
+        fun bindSensor(experimentSensor: ExperimentSensor) {
+            itemBinding.sensorNameTextView.text = experimentSensor.address
+            if(experimentSensor.isConnected) {
                 itemBinding.bluetoothConnectedImageView.visibility = ImageView.VISIBLE
             }
         }
