@@ -18,7 +18,7 @@ class ConnectionManager(
         )
     } as ArrayList<ExperimentSensor>
     private val operationQueue = LinkedList<OperationPair>()
-    private var currentOperationPair: OperationPair? = null
+    var currentOperationPair: OperationPair? = null
 
     fun connectAll() {
         sensors.forEach { connect(it.address) }
@@ -26,11 +26,7 @@ class ConnectionManager(
 
     private fun connect(address: String) {
         enqueueOperation(address, Operation.Connect)
-        Handler(Looper.getMainLooper()).postDelayed(
-            Runnable {
-                enqueueOperation(address, Operation.Disconnect)
-            }, 5000
-        )
+        enqueueOperation(address, Operation.DiscoverServices)
     }
 
     @Synchronized
@@ -56,6 +52,9 @@ class ConnectionManager(
             Operation.Disconnect -> {
                 sensor?.disconnect()
             }
+            Operation.DiscoverServices -> {
+                sensor?.discoverServices()
+            }
         }
     }
 
@@ -70,7 +69,8 @@ class ConnectionManager(
 
 enum class Operation(val id: Short) {
     Connect(1),
-    Disconnect(2)
+    Disconnect(2),
+    DiscoverServices(3)
 }
 
 class OperationPair(val address: String, val operation: Operation)

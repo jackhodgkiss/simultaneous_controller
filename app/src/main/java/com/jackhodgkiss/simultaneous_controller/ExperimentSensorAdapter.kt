@@ -30,7 +30,7 @@ class ExperimentSensorAdapter(private val connectionManager: ConnectionManager) 
     class ExperimentSensorViewHolder(private val itemBinding: ExperimentSensorItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bindSensor(experimentSensor: ExperimentSensor) {
-            itemBinding.sensorNameTextView.text = experimentSensor.address
+            itemBinding.sensorNameTextView.text = experimentSensor.name
             if(experimentSensor.isConnected) {
                 itemBinding.bluetoothConnectedImageView.visibility = ImageView.VISIBLE
             } else {
