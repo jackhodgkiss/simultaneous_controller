@@ -36,7 +36,7 @@ class ExperimentSensor(
         bluetoothGATT?.discoverServices()
     }
 
-    val gattCallback = object : BluetoothGattCallback() {
+    private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 when (newState) {
@@ -76,6 +76,7 @@ class ExperimentSensor(
                     "BluetoothGattCallback",
                     "Discovered ${this?.services?.size} services for $address"
                 )
+                bluetoothGATT?.printGattTable()
             }
             if (connectionManager.currentOperationPair?.operation == Operation.DiscoverServices) {
                 connectionManager.finishOperation()
@@ -117,6 +118,25 @@ class ExperimentSensor(
         }
 
         override fun onReadRemoteRssi(gatt: BluetoothGatt?, rssi: Int, status: Int) {
+
+        }
+    }
+
+    private fun BluetoothGatt.printGattTable() {
+        if (services.isEmpty()) {
+            Log.d("BluetoothGattTable", "No services and characteristic available")
+            return
+        }
+        Log.i("BluetoothGattTable", "${services.size} services found for $address")
+        services.forEach { service ->
+            val characteristicTable = service.characteristics.joinToString(
+                separator = "\n|--",
+                prefix = "|--"
+            ) { it.uuid.toString() }
+            Log.i(
+                "BluetoothGattTable",
+                "\nService ${service.uuid}\nCharacteristics:\n$characteristicTable"
+            )
         }
     }
 
