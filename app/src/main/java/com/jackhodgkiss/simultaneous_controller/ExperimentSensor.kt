@@ -26,6 +26,10 @@ class ExperimentSensor(
         bluetoothGATT = bluetoothDevice?.connectGatt(context, false, gattCallback)
     }
 
+    fun disconnect() {
+        bluetoothGATT?.disconnect()
+    }
+
     val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -36,12 +40,6 @@ class ExperimentSensor(
                             "Successfully connected to $address"
                         )
                         isConnected = true
-                        address = "HELLO"
-                        (context as ExperimentActivity).runOnUiThread {
-                            Runnable {
-                                context.updateAdapter()
-                            }.run()
-                        }
                     }
                     BluetoothProfile.STATE_DISCONNECTED -> {
                         Log.i(
@@ -57,6 +55,12 @@ class ExperimentSensor(
                         isConnected = false
                     }
                 }
+                (context as ExperimentActivity).runOnUiThread {
+                    Runnable {
+                        context.updateAdapter()
+                    }.run()
+                }
+                connectionManager.finishOperation()
             }
         }
     }

@@ -41,7 +41,7 @@ class ExperimentActivity : AppCompatActivity() {
         experimentSensorRecyclerView.adapter = experimentSensorAdapter
         experimentSensorRecyclerView.layoutManager = LinearLayoutManager(this)
         experimentSensorRecyclerView.itemAnimator = null
-        binding.connectButton.setOnClickListener { connectionManager.connect() }
+        binding.connectButton.setOnClickListener { connectionManager.connectAll() }
         binding.startButton.setOnClickListener { startExperiment() }
         binding.timeChronometer.setOnChronometerTickListener {
             if (binding.timeChronometer.base <= countDownEnd) {

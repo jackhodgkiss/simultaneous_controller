@@ -33,6 +33,8 @@ class ExperimentSensorAdapter(private val connectionManager: ConnectionManager) 
             itemBinding.sensorNameTextView.text = experimentSensor.address
             if(experimentSensor.isConnected) {
                 itemBinding.bluetoothConnectedImageView.visibility = ImageView.VISIBLE
+            } else {
+                itemBinding.bluetoothConnectedImageView.visibility = ImageView.INVISIBLE
             }
         }
     }
