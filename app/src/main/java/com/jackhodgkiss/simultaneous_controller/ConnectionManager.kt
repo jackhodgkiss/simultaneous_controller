@@ -28,11 +28,14 @@ class ConnectionManager(
         enqueueOperation(address, Operation.Connect)
         enqueueOperation(address, Operation.DiscoverServices)
         enqueueOperation(address, Operation.EnableNotifications)
-        enqueueOperation(address, Operation.CharacteristicWrite)
+    }
+
+    fun sendTransmissionProbes() {
+        sensors.forEach { it.sendTransmissionProbes() }
     }
 
     @Synchronized
-    private fun enqueueOperation(address: String, operation: Operation) {
+    fun enqueueOperation(address: String, operation: Operation) {
         operationQueue.add(OperationPair(address, operation))
         if (currentOperationPair == null) {
             nextOperation()
@@ -63,6 +66,9 @@ class ConnectionManager(
             Operation.EnableNotifications -> {
                 sensor?.enableNotifications()
             }
+            Operation.ReadRSSI -> {
+                sensor?.readRSSI()
+            }
         }
     }
 
@@ -80,7 +86,8 @@ enum class Operation(val id: Short) {
     Disconnect(2),
     DiscoverServices(3),
     CharacteristicWrite(4),
-    EnableNotifications(5)
+    EnableNotifications(5),
+    ReadRSSI(6)
 }
 
 class OperationPair(val address: String, val operation: Operation)

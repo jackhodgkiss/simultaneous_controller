@@ -53,8 +53,9 @@ class ExperimentActivity : AppCompatActivity() {
     }
 
     private fun startExperiment() {
-        setChronometer()
-        binding.timeChronometer.start()
+//        setChronometer()
+//        binding.timeChronometer.start()
+        connectionManager.sendTransmissionProbes()
     }
 
     fun updateAdapter() {

@@ -40,6 +40,16 @@ class ExperimentSensor(
         bluetoothGATT?.discoverServices()
     }
 
+    fun readRSSI() {
+        bluetoothGATT?.readRemoteRssi()
+    }
+
+    fun sendTransmissionProbes() {
+        repeat(5) {
+            connectionManager.enqueueOperation(address, Operation.CharacteristicWrite)
+        }
+    }
+
     private fun BluetoothGattCharacteristic.containsProperty(property: Int): Boolean {
         return properties and property != 0
     }
@@ -89,7 +99,10 @@ class ExperimentSensor(
                         context.updateAdapter()
                     }.run()
                 }
-                connectionManager.finishOperation()
+                if (connectionManager.currentOperationPair?.operation == Operation.Connect
+                    || connectionManager.currentOperationPair?.operation == Operation.Disconnect) {
+                    connectionManager.finishOperation()
+                }
             }
         }
 
@@ -104,13 +117,6 @@ class ExperimentSensor(
             if (connectionManager.currentOperationPair?.operation == Operation.DiscoverServices) {
                 connectionManager.finishOperation()
             }
-        }
-
-        override fun onCharacteristicRead(
-            gatt: BluetoothGatt?,
-            characteristic: BluetoothGattCharacteristic?,
-            status: Int
-        ) {
         }
 
         override fun onCharacteristicWrite(
@@ -161,6 +167,7 @@ class ExperimentSensor(
                 value.forEach { valAsBin = valAsBin.plus(" " + it.toUByte().toString(2)) }
                 Log.i("BluetoothGattCallback", "Characteristic $address->$uuid | value: $valAsBin")
             }
+            connectionManager.enqueueOperation(address, Operation.ReadRSSI)
         }
 
         override fun onDescriptorWrite(
@@ -180,7 +187,10 @@ class ExperimentSensor(
         }
 
         override fun onReadRemoteRssi(gatt: BluetoothGatt?, rssi: Int, status: Int) {
-
+            Log.i("BluetoothGattCallback", "RSSI@$address: $rssi")
+            if (connectionManager.currentOperationPair?.operation == Operation.ReadRSSI) {
+                connectionManager.finishOperation()
+            }
         }
     }
 
