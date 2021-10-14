@@ -1,10 +1,9 @@
 package com.jackhodgkiss.simultaneous_controller
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
+import android.util.Log
 import java.util.*
-import kotlin.collections.ArrayList
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class ConnectionManager(
     val context: Context,
@@ -17,7 +16,7 @@ class ConnectionManager(
             this
         )
     } as ArrayList<ExperimentSensor>
-    private val operationQueue = LinkedList<OperationPair>()
+    private val operationQueue = ConcurrentLinkedQueue<OperationPair>()
     var currentOperationPair: OperationPair? = null
 
     fun connectAll() {
@@ -31,7 +30,14 @@ class ConnectionManager(
     }
 
     fun sendTransmissionProbes() {
-        sensors.forEach { it.sendTransmissionProbes() }
+        var index = 0
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                index++
+                Log.d("sendTransmissionProbes", "$index")
+                if(index >= 10) { cancel() }
+            }
+        }, 2, 10)
     }
 
     @Synchronized

@@ -45,9 +45,7 @@ class ExperimentSensor(
     }
 
     fun sendTransmissionProbes() {
-        repeat(5) {
-            connectionManager.enqueueOperation(address, Operation.CharacteristicWrite)
-        }
+        connectionManager.enqueueOperation(address, Operation.CharacteristicWrite)
     }
 
     private fun BluetoothGattCharacteristic.containsProperty(property: Int): Boolean {
