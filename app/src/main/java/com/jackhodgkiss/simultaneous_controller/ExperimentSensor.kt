@@ -20,6 +20,7 @@ class ExperimentSensor(
     var bluetoothAdapter: BluetoothAdapter? = null
     private val serialServiceUUID = UUID.fromString("f000c0c0-0451-4000-b000-000000000000")
     private val dataInUUID = UUID.fromString("f000c0c1-0451-4000-b000-000000000000")
+    private val dataOutUUID = UUID.fromString("f000c0c2-0451-4000-b000-000000000000")
 
     init {
         bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -153,15 +154,13 @@ class ExperimentSensor(
 
         override fun onCharacteristicChanged(
             gatt: BluetoothGatt?,
-            characteristic: BluetoothGattCharacteristic?
+            characteristic: BluetoothGattCharacteristic
         ) {
-        }
-
-        override fun onDescriptorRead(
-            gatt: BluetoothGatt?,
-            descriptor: BluetoothGattDescriptor?,
-            status: Int
-        ) {
+            with(characteristic) {
+                var valAsBin = "0b"
+                value.forEach { valAsBin = valAsBin.plus(" " + it.toUByte().toString(2)) }
+                Log.i("BluetoothGattCallback", "Characteristic $address->$uuid | value: $valAsBin")
+            }
         }
 
         override fun onDescriptorWrite(
@@ -169,6 +168,15 @@ class ExperimentSensor(
             descriptor: BluetoothGattDescriptor?,
             status: Int
         ) {
+            when (status) {
+                BluetoothGatt.GATT_SUCCESS -> Log.i(
+                    "BluetoothGattCallback",
+                    "Successfully written descriptor $address->${descriptor?.uuid}"
+                )
+            }
+            if (connectionManager.currentOperationPair?.operation == Operation.EnableNotifications) {
+                connectionManager.finishOperation()
+            }
         }
 
         override fun onReadRemoteRssi(gatt: BluetoothGatt?, rssi: Int, status: Int) {
@@ -189,6 +197,37 @@ class ExperimentSensor(
             characteristic?.writeType = writeType
             characteristic?.value = payload
             bluetoothGATT?.writeCharacteristic(characteristic)
+        }
+    }
+
+    private fun writeDescriptor(descriptor: BluetoothGattDescriptor?, payload: ByteArray) {
+        bluetoothGATT.let {
+            descriptor?.value = payload
+            bluetoothGATT?.writeDescriptor(descriptor)
+        }
+    }
+
+    fun enableNotifications() {
+        val characteristic =
+            bluetoothGATT?.getService(serialServiceUUID)?.getCharacteristic(dataOutUUID)
+        val characteristicDescriptor = characteristic?.descriptors?.get(0)
+        val payload = when {
+            characteristic?.isIndicatable() == true -> BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
+            characteristic?.isNotifiable() == true -> BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+            else -> {
+                Log.e(
+                    "EnableNotifications",
+                    "$address->${characteristic?.uuid} does not support notifications or indications"
+                )
+            }
+        }
+        if (!bluetoothGATT?.setCharacteristicNotification(characteristic, true)!!) {
+            Log.e(
+                "EnableNotifications",
+                "Failed to set characteristic $address->${characteristic?.uuid}"
+            )
+        } else {
+            writeDescriptor(characteristicDescriptor, payload as ByteArray)
         }
     }
 

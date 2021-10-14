@@ -27,6 +27,7 @@ class ConnectionManager(
     private fun connect(address: String) {
         enqueueOperation(address, Operation.Connect)
         enqueueOperation(address, Operation.DiscoverServices)
+        enqueueOperation(address, Operation.EnableNotifications)
         enqueueOperation(address, Operation.CharacteristicWrite)
     }
 
@@ -59,6 +60,9 @@ class ConnectionManager(
             Operation.CharacteristicWrite -> {
                 sensor?.writeCharacteristic()
             }
+            Operation.EnableNotifications -> {
+                sensor?.enableNotifications()
+            }
         }
     }
 
@@ -75,7 +79,8 @@ enum class Operation(val id: Short) {
     Connect(1),
     Disconnect(2),
     DiscoverServices(3),
-    CharacteristicWrite(4)
+    CharacteristicWrite(4),
+    EnableNotifications(5)
 }
 
 class OperationPair(val address: String, val operation: Operation)
