@@ -29,7 +29,13 @@ class ExperimentSensor(
     }
 
     fun connect() {
-        bluetoothGATT = bluetoothDevice?.connectGatt(context, false, gattCallback)
+        bluetoothGATT = bluetoothDevice?.connectGatt(
+            context,
+            false,
+            gattCallback,
+            BluetoothDevice.TRANSPORT_AUTO,
+            BluetoothDevice.PHY_LE_2M
+        )
     }
 
     fun disconnect() {
@@ -98,7 +104,8 @@ class ExperimentSensor(
                     }.run()
                 }
                 if (connectionManager.currentOperationPair?.operation == Operation.Connect
-                    || connectionManager.currentOperationPair?.operation == Operation.Disconnect) {
+                    || connectionManager.currentOperationPair?.operation == Operation.Disconnect
+                ) {
                     connectionManager.finishOperation()
                 }
             }
@@ -189,6 +196,14 @@ class ExperimentSensor(
             if (connectionManager.currentOperationPair?.operation == Operation.ReadRSSI) {
                 connectionManager.finishOperation()
             }
+        }
+
+        override fun onPhyUpdate(gatt: BluetoothGatt?, txPhy: Int, rxPhy: Int, status: Int) {
+            Log.d("BluetoothGattCallback", "onPhyUpdate")
+        }
+
+        override fun onPhyRead(gatt: BluetoothGatt?, txPhy: Int, rxPhy: Int, status: Int) {
+            Log.d("BluetoothGattCallback", "onPhyRead")
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.ActivityExperimentBinding
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 class ExperimentActivity : AppCompatActivity() {
     private lateinit var manifest: ExperimentManifest
@@ -64,7 +65,9 @@ class ExperimentActivity : AppCompatActivity() {
         var packetsRemaining = 10
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                packetsRemaining--
+                if (--packetsRemaining <= 0) {
+                    cancel()
+                }
                 connectionManager.enqueueOperation(
                     OperationPair(
                         connectionManager.sensors[0].address,
@@ -72,9 +75,8 @@ class ExperimentActivity : AppCompatActivity() {
                         packetsRemaining.toString().toByteArray(Charsets.US_ASCII)
                     )
                 )
-                if(packetsRemaining <= 0) { cancel() }
             }
-        }, 2, 100)
+        }, 0, 20)
     }
 
     fun updateAdapter() {
