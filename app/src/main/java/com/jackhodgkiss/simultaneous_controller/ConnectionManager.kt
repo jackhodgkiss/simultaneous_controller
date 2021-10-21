@@ -29,20 +29,17 @@ class ConnectionManager(
         enqueueOperation(address, Operation.EnableNotifications)
     }
 
-    fun sendTransmissionProbes() {
-        var index = 0
-        Timer().scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                index++
-                Log.d("sendTransmissionProbes", "$index")
-                if(index >= 10) { cancel() }
-            }
-        }, 2, 10)
-    }
-
     @Synchronized
     fun enqueueOperation(address: String, operation: Operation) {
         operationQueue.add(OperationPair(address, operation))
+        if (currentOperationPair == null) {
+            nextOperation()
+        }
+    }
+
+    @Synchronized
+    fun enqueueOperation(operationPair: OperationPair) {
+        operationQueue.add(operationPair)
         if (currentOperationPair == null) {
             nextOperation()
         }
@@ -67,7 +64,7 @@ class ConnectionManager(
                 sensor?.discoverServices()
             }
             Operation.CharacteristicWrite -> {
-                sensor?.writeCharacteristic()
+                sensor?.writeCharacteristic(currentOperationPair!!.payload)
             }
             Operation.EnableNotifications -> {
                 sensor?.enableNotifications()
@@ -96,4 +93,4 @@ enum class Operation(val id: Short) {
     ReadRSSI(6)
 }
 
-class OperationPair(val address: String, val operation: Operation)
+class OperationPair(val address: String, val operation: Operation, val payload: ByteArray? = null)

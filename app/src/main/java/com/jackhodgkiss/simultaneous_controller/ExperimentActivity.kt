@@ -5,9 +5,11 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jackhodgkiss.simultaneous_controller.databinding.ActivityExperimentBinding
+import java.util.*
 import kotlin.collections.ArrayList
 
 class ExperimentActivity : AppCompatActivity() {
@@ -55,7 +57,24 @@ class ExperimentActivity : AppCompatActivity() {
     private fun startExperiment() {
 //        setChronometer()
 //        binding.timeChronometer.start()
-        connectionManager.sendTransmissionProbes()
+        experimentLoop()
+    }
+
+    private fun experimentLoop() {
+        var packetsRemaining = 10
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                packetsRemaining--
+                connectionManager.enqueueOperation(
+                    OperationPair(
+                        connectionManager.sensors[0].address,
+                        Operation.CharacteristicWrite,
+                        packetsRemaining.toString().toByteArray(Charsets.US_ASCII)
+                    )
+                )
+                if(packetsRemaining <= 0) { cancel() }
+            }
+        }, 2, 100)
     }
 
     fun updateAdapter() {

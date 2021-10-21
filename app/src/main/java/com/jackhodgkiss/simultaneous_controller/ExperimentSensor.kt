@@ -192,8 +192,7 @@ class ExperimentSensor(
         }
     }
 
-    fun writeCharacteristic() {
-        val payload = "Hello".toByteArray(Charsets.US_ASCII)
+    fun writeCharacteristic(payload: ByteArray? = "NULL".toByteArray(Charsets.US_ASCII)) {
         val characteristic =
             bluetoothGATT?.getService(serialServiceUUID)?.getCharacteristic(dataInUUID)
         val writeType = when {
