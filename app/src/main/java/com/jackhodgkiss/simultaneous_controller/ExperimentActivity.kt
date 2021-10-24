@@ -62,7 +62,7 @@ class ExperimentActivity : AppCompatActivity() {
     }
 
     private fun experimentLoop() {
-        var packetsRemaining = 10
+        var packetsRemaining = 4
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 if (--packetsRemaining <= 0) {
@@ -76,7 +76,7 @@ class ExperimentActivity : AppCompatActivity() {
                     )
                 )
             }
-        }, 0, 20)
+        }, 0, 50)
     }
 
     fun updateAdapter() {
